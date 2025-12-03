@@ -21,7 +21,7 @@ void	ObjParser::FillRaw(std::ifstream& ifs)
 		else if (prefix == "vn")
 			this->raw.normals.emplace_back(NewNormal(ss, count));
 		else if (prefix == "f")
-			this->raw.faces.emplace_back(NewFace(ss, count));
+			this->raw.faces.emplace_back(NewFace(ss, this->raw, count));
 		else if (prefix == "#")
 			continue;
 		else

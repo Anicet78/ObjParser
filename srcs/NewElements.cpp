@@ -54,7 +54,45 @@ Normal	NewNormal(std::istringstream& ss, size_t currentLine)
 	return (Normal(x, y, z).normalize());
 }
 
-Face	NewFace(std::istringstream& ss, size_t currentLine)
+Face	NewFace(std::istringstream& ss, OBJRaw& raw, size_t currentLine)
 {
-
+	Face face;
+	std::string	currentFace;
+	while (ss >> currentFace)
+	{
+		uint32_t v_indice, vt_indice = 0, vn_indice = 0;
+		if (std::getline(ss, currentFace, '/'))
+		{
+			if (currentFace.empty())
+				ThrowError("No vertex indice defined in `f`", ss, currentLine);
+			int v = std::stoi(currentFace);
+			if (v == 0)
+				ThrowError("Vertex indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", ss, currentLine);
+			v_indice = GetIndex(raw.vertices, v);
+			if (v_indice == 0)
+				ThrowError("Vertex indice " + currentFace + " not found in the vertices list in `f`, the vertices used must be declared before the face declaration", currentLine);
+		}
+		if (std::getline(ss, currentFace, '/') && !currentFace.empty())
+		{
+			int vt = std::stoi(currentFace);
+			if (vt == 0)
+				ThrowError("Texture indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", ss, currentLine);
+			vt_indice = GetIndex(raw.uvs, vt);
+			if (vt_indice == 0)
+				ThrowError("Texture indice " + currentFace + " not found in the uvs list in `f`, the uvs used must be declared before the face declaration", currentLine);
+		}
+		if (std::getline(ss, currentFace, '/') && !currentFace.empty())
+		{
+			int vn = std::stoi(currentFace);
+			if (vn == 0)
+				ThrowError("Normal indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", ss, currentLine);
+			vn_indice = GetIndex(raw.normals, vn);
+			if (vn_indice == 0)
+				ThrowError("Normal indice " + currentFace + " not found in the normals list in `f`, the normals used must be declared before the face declaration", currentLine);
+		}
+		face.elements.emplace_back(FaceElement(v_indice, vt_indice, vn_indice));
+	}
+	if (face.elements.size() < 3)
+		ThrowError("Not enough arguments in `f`, not enough vertices given (should be at least 3)", currentLine);
+	return (face);
 }

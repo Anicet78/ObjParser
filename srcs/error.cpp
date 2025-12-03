@@ -1,19 +1,19 @@
 #include "ObjParser.hpp"
 
-void	ThrowError(std::string error)
+[[noreturn]] void	ThrowError(std::string error)
 {
-	std::cerr << COLOR_LIGHT_RED << "An error as occured: " << error << COLOR_NC << std::endl;
-	throw std::runtime_error(error);
+	throw std::runtime_error("An error as occured: " + error);
 }
 
-void	ThrowError(std::string error, size_t line)
+[[noreturn]] void	ThrowError(std::string error, size_t line)
 {
-	std::cerr << COLOR_LIGHT_RED << "An error as occured at line " << std::to_string(line) << ": " << error << COLOR_NC << std::endl;
-	throw std::runtime_error(error);
+	throw std::runtime_error("An error as occured at line " + std::to_string(line) + ": " + error);
 }
 
-void	ThrowError(std::string error, std::istringstream& ss, size_t line)
+[[noreturn]] void	ThrowError(std::string error, std::istringstream& ss, size_t line)
 {
-	std::cerr << COLOR_LIGHT_RED << "An error as occured at line " << std::to_string(line) << ": " << error << " on token" << ss.str() << COLOR_NC << std::endl;
-	throw std::runtime_error(error);
+	std::string token = ss.str();
+	if (!token.empty() && token.back() == '\r')
+		token.pop_back();
+	throw std::runtime_error("An error as occured at line " + std::to_string(line) + ": " + error + " on token '" + token + "'");
 }

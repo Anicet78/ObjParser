@@ -4,7 +4,7 @@
 # include <cstring>
 # include <cstdint>
 
-float Q_rsqrt(float number)
+inline float Q_rsqrt(float number)
 {
 	float x2 = number * 0.5F, y = number;
 	std::uint32_t i;

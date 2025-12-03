@@ -47,11 +47,7 @@ struct vec4 {
 
 };
 
-std::ostream& operator<<(std::ostream& os, const vec4& v);
-
-#endif // VEC4_HPP
-
-vec4::vec4(float x, float y, float z, float w)
+inline vec4::vec4(float x, float y, float z, float w)
 {
 	this->x = x;
 	this->y = y;
@@ -59,37 +55,37 @@ vec4::vec4(float x, float y, float z, float w)
 	this->w = w;
 }
 
-bool	vec4::operator==(const vec4& vec) const
+inline bool	vec4::operator==(const vec4& vec) const
 {
-	return (x == vec.x && y == vec.y && z == vec.z && w == vec.w);
+	return (vec.x == this->x && vec.y == this->y && vec.z == this->z && vec.w == this->w);
 }
 
-bool	vec4::operator!=(const vec4& vec) const
+inline bool	vec4::operator!=(const vec4& vec) const
 {
-	return (x != vec.x || y != vec.y || z != vec.z || w != vec.w);
+	return (vec.x != this->x || vec.y != this->y || vec.z != this->z || vec.w != this->w);
 }
 
-vec4	vec4::operator+(const vec4& vec) const
+inline vec4	vec4::operator+(const vec4& vec) const
 {
 	return (vec4(this->x + vec.x, this->y + vec.y, this->z + vec.z, this->w + vec.w));
 }
 
-vec4	vec4::operator-(const vec4& vec) const
+inline vec4	vec4::operator-(const vec4& vec) const
 {
 	return (vec4(this->x - vec.x, this->y - vec.y, this->z - vec.z, this->w - vec.w));
 }
 
-vec4	vec4::operator*(const vec4& vec) const
+inline vec4	vec4::operator*(const vec4& vec) const
 {
 	return (vec4(this->x * vec.x, this->y * vec.y, this->z * vec.z, this->w * vec.w));
 }
 
-vec4	vec4::operator/(const vec4& vec) const
+inline vec4	vec4::operator/(const vec4& vec) const
 {
 	return (vec4(this->x / vec.x, this->y / vec.y, this->z / vec.z, this->w / vec.w));
 }
 
-vec4&	vec4::operator+=(const vec4& vec)
+inline vec4&	vec4::operator+=(const vec4& vec)
 {
 	this->x += vec.x;
 	this->y += vec.y;
@@ -98,7 +94,7 @@ vec4&	vec4::operator+=(const vec4& vec)
 	return (*this);
 }
 
-vec4&	vec4::operator-=(const vec4& vec)
+inline vec4&	vec4::operator-=(const vec4& vec)
 {
 	this->x -= vec.x;
 	this->y -= vec.y;
@@ -107,7 +103,7 @@ vec4&	vec4::operator-=(const vec4& vec)
 	return (*this);
 }
 
-vec4&	vec4::operator*=(const vec4& vec)
+inline vec4&	vec4::operator*=(const vec4& vec)
 {
 	this->x *= vec.x;
 	this->y *= vec.y;
@@ -116,7 +112,7 @@ vec4&	vec4::operator*=(const vec4& vec)
 	return (*this);
 }
 
-vec4&	vec4::operator/=(const vec4& vec)
+inline vec4&	vec4::operator/=(const vec4& vec)
 {
 	this->x /= vec.x;
 	this->y /= vec.y;
@@ -125,27 +121,27 @@ vec4&	vec4::operator/=(const vec4& vec)
 	return (*this);
 }
 
-vec4	vec4::operator+(float value) const
+inline vec4	vec4::operator+(float value) const
 {
 	return (vec4(this->x + value, this->y + value, this->z + value, this->w + value));
 }
 
-vec4	vec4::operator-(float value) const
+inline vec4	vec4::operator-(float value) const
 {
 	return (vec4(this->x - value, this->y - value, this->z - value, this->w - value));
 }
 
-vec4	vec4::operator*(float value) const
+inline vec4	vec4::operator*(float value) const
 {
 	return (vec4(this->x * value, this->y * value, this->z * value, this->w * value));
 }
 
-vec4	vec4::operator/(float value) const
+inline vec4	vec4::operator/(float value) const
 {
 	return (vec4(this->x / value, this->y / value, this->z / value, this->w / value));
 }
 
-vec4&	vec4::operator+=(float value)
+inline vec4&	vec4::operator+=(float value)
 {
 	this->x += value;
 	this->y += value;
@@ -154,7 +150,7 @@ vec4&	vec4::operator+=(float value)
 	return (*this);
 }
 
-vec4&	vec4::operator-=(float value)
+inline vec4&	vec4::operator-=(float value)
 {
 	this->x -= value;
 	this->y -= value;
@@ -163,7 +159,7 @@ vec4&	vec4::operator-=(float value)
 	return (*this);
 }
 
-vec4&	vec4::operator*=(float value)
+inline vec4&	vec4::operator*=(float value)
 {
 	this->x *= value;
 	this->y *= value;
@@ -172,7 +168,7 @@ vec4&	vec4::operator*=(float value)
 	return (*this);
 }
 
-vec4&	vec4::operator/=(float value)
+inline vec4&	vec4::operator/=(float value)
 {
 	this->x /= value;
 	this->y /= value;
@@ -181,38 +177,40 @@ vec4&	vec4::operator/=(float value)
 	return (*this);
 }
 
-vec4	vec4::operator-(void) const
+inline vec4	vec4::operator-(void) const
 {
 	return (vec4(-this->x, -this->y, -this->z, -this->w));
 }
 
-float&	vec4::operator[](int idx)
+inline float&	vec4::operator[](int idx)
 {
 	if (idx < 0 || idx > 3)
 		throw std::runtime_error("Invalid index: " + std::to_string(idx));
 	return (idx == 0 ? this->x : idx == 1 ? this->y : idx == 2 ? this->z : this->w);
 }
 
-const float&	vec4::operator[](int idx) const
+inline const float&	vec4::operator[](int idx) const
 {
 	if (idx < 0 || idx > 3)
 		throw std::runtime_error("Invalid index: " + std::to_string(idx));
 	return (idx == 0 ? this->x : idx == 1 ? this->y : idx == 2 ? this->z : this->w);
 }
 
-float vec4::dot(const vec4& vec) const
+inline float	vec4::dot(const vec4& vec) const
 {
 	return (this->x * vec.x + this->y * vec.y + this->z * vec.z + this->w * vec.w);
 }
 
-vec4& vec4::normalize(void)
+inline vec4&	vec4::normalize(void)
 {
 	*this * Q_rsqrt(this->dot(*this));
 	return (*this);
 }
 
-std::ostream& operator<<(std::ostream& os, const vec4& v)
+inline std::ostream& operator<<(std::ostream& os, const vec4& v)
 {
 	os << "vec4(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
 	return os;
 }
+
+#endif // VEC4_HPP

@@ -45,148 +45,152 @@ struct vec2 {
 
 };
 
-std::ostream& operator<<(std::ostream& os, const vec2& v);
-
-#endif // VEC2_HPP
-
-vec2::vec2(float x, float y)
+inline vec2::vec2(float x, float y)
 {
 	this->x = x;
 	this->y = y;
 }
 
-bool	vec2::operator==(const vec2& vec) const
+inline bool	vec2::operator==(const vec2& vec) const
 {
-	return (x == this->x && y == this->y);
+	return (vec.x == this->x && vec.y == this->y);
 }
 
-bool	vec2::operator!=(const vec2& vec) const
+inline bool	vec2::operator!=(const vec2& vec) const
 {
-	return (x != this->x || y != this->y);
+	return (vec.x != this->x || vec.y != this->y);
 }
 
-vec2	vec2::operator+(const vec2& vec) const
+inline vec2	vec2::operator+(const vec2& vec) const
 {
 	return (vec2(this->x + vec.x, this->y + vec.y));
 }
 
-vec2	vec2::operator-(const vec2& vec) const
+inline vec2	vec2::operator-(const vec2& vec) const
 {
 	return (vec2(this->x - vec.x, this->y - vec.y));
 }
 
-vec2	vec2::operator*(const vec2& vec) const
+inline vec2	vec2::operator*(const vec2& vec) const
 {
 	return (vec2(this->x * vec.x, this->y * vec.y));
 }
 
-vec2	vec2::operator/(const vec2& vec) const
+inline vec2	vec2::operator/(const vec2& vec) const
 {
 	return (vec2(this->x / vec.x, this->y / vec.y));
 }
 
-vec2&	vec2::operator+=(const vec2& vec)
+inline vec2&	vec2::operator+=(const vec2& vec)
 {
 	this->x += vec.x;
 	this->y += vec.y;
 	return (*this);
 }
 
-vec2&	vec2::operator-=(const vec2& vec)
+inline vec2&	vec2::operator-=(const vec2& vec)
 {
 	this->x -= vec.x;
 	this->y -= vec.y;
 	return (*this);
 }
 
-vec2&	vec2::operator*=(const vec2& vec)
+inline vec2&	vec2::operator*=(const vec2& vec)
 {
 	this->x *= vec.x;
 	this->y *= vec.y;
 	return (*this);
 }
 
-vec2&	vec2::operator/=(const vec2& vec)
+inline vec2&	vec2::operator/=(const vec2& vec)
 {
 	this->x /= vec.x;
 	this->y /= vec.y;
 	return (*this);
 }
 
-vec2	vec2::operator+(float value) const
+inline vec2	vec2::operator+(float value) const
 {
 	return (vec2(this->x + value, this->y + value));
 }
 
-vec2	vec2::operator-(float value) const
+inline vec2	vec2::operator-(float value) const
 {
 	return (vec2(this->x - value, this->y - value));
 }
 
-vec2	vec2::operator*(float value) const
+inline vec2	vec2::operator*(float value) const
 {
 	return (vec2(this->x * value, this->y * value));
 }
 
-vec2	vec2::operator/(float value) const
+inline vec2	vec2::operator/(float value) const
 {
 	return (vec2(this->x / value, this->y / value));
 }
 
-vec2&	vec2::operator+=(float value)
+inline vec2&	vec2::operator+=(float value)
 {
 	this->x += value;
 	this->y += value;
 	return (*this);
 }
 
-vec2&	vec2::operator-=(float value)
+inline vec2&	vec2::operator-=(float value)
 {
 	this->x -= value;
 	this->y -= value;
 	return (*this);
 }
 
-vec2&	vec2::operator*=(float value)
+inline vec2&	vec2::operator*=(float value)
 {
 	this->x *= value;
 	this->y *= value;
 	return (*this);
 }
 
-vec2&	vec2::operator/=(float value)
+inline vec2&	vec2::operator/=(float value)
 {
 	this->x /= value;
 	this->y /= value;
 	return (*this);
 }
 
-vec2	vec2::operator-(void) const
+inline vec2	vec2::operator-(void) const
 {
 	return (vec2(-this->x, -this->y));
 }
 
-float&	vec2::operator[](int idx)
+inline float&	vec2::operator[](int idx)
 {
 	if (idx != 0 && idx != 1)
 		throw std::runtime_error("Invalid index: " + std::to_string(idx));
 	return (idx == 0 ? this->x : this->y);
 }
 
-const float&	vec2::operator[](int idx) const
+inline const float&	vec2::operator[](int idx) const
 {
 	if (idx != 0 && idx != 1)
 		throw std::runtime_error("Invalid index: " + std::to_string(idx));
 	return (idx == 0 ? this->x : this->y);
 }
 
-float vec2::dot(const vec2& vec) const
+inline float	vec2::dot(const vec2& vec) const
 {
 	return (this->x * vec.x + this->y * vec.y);
 }
 
-vec2& vec2::normalize(void)
+inline vec2&	vec2::normalize(void)
 {
 	*this * Q_rsqrt(this->dot(*this));
 	return (*this);
 }
+
+inline std::ostream& operator<<(std::ostream& os, const vec2& v)
+{
+	os << "vec4(" << v.x << ", " << v.y << ")";
+	return os;
+}
+
+#endif // VEC2_HPP
