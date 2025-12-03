@@ -3,16 +3,16 @@
 Vertex	NewVertex(std::istringstream& ss, size_t currentLine)
 {
 	float x, y, z, w = 1.0;
-	if (!(ss >> x) || !(ss >> y) || !(ss >> z))
+	if (!(ss >> x >> y >> z))
 	{
 		if (ss.eof())
 			ThrowError("Not enough arguments in `v` (x, y, z, [w])", currentLine);
 		else
-			ThrowError("Invalid coordinate argument in `v`", ss , currentLine);
+			ThrowError("Invalid coordinate argument in `v`", ss, currentLine);
 	}
-	if (!ss.eof() && !(ss >> w))
-		ThrowError("Invalid scale argument in `v`", ss , currentLine);
-	if (!ss.eof())
+	if (!(ss >> w) && !ss.eof())
+		ThrowError("Invalid scale argument in `v`", ss, currentLine);
+	if (ss >> std::ws; ss.peek() != EOF)
 		ThrowError("Too many arguments in `v`", currentLine);
 	return (Vertex(x, y, z, w));
 }
@@ -20,15 +20,18 @@ Vertex	NewVertex(std::istringstream& ss, size_t currentLine)
 UV	NewUV(std::istringstream& ss, size_t currentLine)
 {
 	float u, v = 0, w = 0;
-	if (ss.eof())
-		ThrowError("Not enough argument in `vt` (u, [v, w])", currentLine);
 	if (!(ss >> u))
+	{
+		if (ss.eof())
+			ThrowError("Not enough argument in `vt` (u, [v, w])", currentLine);
+		else
+			ThrowError("Invalid coordinate argument in `vt`", ss, currentLine);
+	}
+	if (!(ss >> v) && !ss.eof())
 		ThrowError("Invalid coordinate argument in `vt`", ss, currentLine);
-	if (!ss.eof() && !(ss >> v))
+	if (!ss.eof() && !(ss >> w) && !ss.eof())
 		ThrowError("Invalid coordinate argument in `vt`", ss, currentLine);
-	if (!ss.eof() && !(ss >> w))
-		ThrowError("Invalid coordinate argument in `vt`", ss, currentLine);
-	if (!ss.eof())
+	if (ss >> std::ws; ss.peek() != EOF)
 		ThrowError("Too many arguments in `vt`", currentLine);
 	if (u < 0 || u > 1)
 		ThrowError("Invalid u coordinate in `vt`, every coordinates should be in [0,1]", currentLine);
@@ -42,14 +45,14 @@ UV	NewUV(std::istringstream& ss, size_t currentLine)
 Normal	NewNormal(std::istringstream& ss, size_t currentLine)
 {
 	float x, y, z;
-	if (!(ss >> x) || !(ss >> y) || !(ss >> z))
+	if (!(ss >> x >> y >> z))
 	{
 		if (ss.eof())
 			ThrowError("Not enough arguments in `vn` (x, y, z)", currentLine);
 		else
-			ThrowError("Invalid normal argument in `vn`", ss , currentLine);
+			ThrowError("Invalid normal argument in `vn`", ss, currentLine);
 	}
-	if (!ss.eof())
+	if (ss >> std::ws; ss.peek() != EOF)
 		ThrowError("Too many arguments in `vt`", currentLine);
 	return (Normal(x, y, z).normalize());
 }
@@ -64,10 +67,10 @@ Face	NewFace(std::istringstream& ss, OBJRaw& raw, size_t currentLine)
 		if (std::getline(ss, currentFace, '/'))
 		{
 			if (currentFace.empty())
-				ThrowError("No vertex indice defined in `f`", ss, currentLine);
+				ThrowError("No vertex indice defined in `f`", currentLine);
 			int v = std::stoi(currentFace);
 			if (v == 0)
-				ThrowError("Vertex indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", ss, currentLine);
+				ThrowError("Vertex indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, currentLine);
 			v_indice = GetIndex(raw.vertices, v);
 			if (v_indice == 0)
 				ThrowError("Vertex indice " + currentFace + " not found in the vertices list in `f`, the vertices used must be declared before the face declaration", currentLine);
@@ -76,7 +79,7 @@ Face	NewFace(std::istringstream& ss, OBJRaw& raw, size_t currentLine)
 		{
 			int vt = std::stoi(currentFace);
 			if (vt == 0)
-				ThrowError("Texture indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", ss, currentLine);
+				ThrowError("Texture indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, currentLine);
 			vt_indice = GetIndex(raw.uvs, vt);
 			if (vt_indice == 0)
 				ThrowError("Texture indice " + currentFace + " not found in the uvs list in `f`, the uvs used must be declared before the face declaration", currentLine);
@@ -85,7 +88,7 @@ Face	NewFace(std::istringstream& ss, OBJRaw& raw, size_t currentLine)
 		{
 			int vn = std::stoi(currentFace);
 			if (vn == 0)
-				ThrowError("Normal indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", ss, currentLine);
+				ThrowError("Normal indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, currentLine);
 			vn_indice = GetIndex(raw.normals, vn);
 			if (vn_indice == 0)
 				ThrowError("Normal indice " + currentFace + " not found in the normals list in `f`, the normals used must be declared before the face declaration", currentLine);

@@ -25,7 +25,7 @@ void	ObjParser::FillRaw(std::ifstream& ifs)
 		else if (prefix == "#")
 			continue;
 		else
-			ThrowError("Element not recognized", ss, count);
+			ThrowError("Element not recognized", prefix, count);
 	}
 }
 
