@@ -2,19 +2,33 @@
 
 ObjParser::ObjParser(void)
 {
-	this->activeGroups.emplace_back(&this->groups["default"]);
+	this->currentObject = &this->objects["default"];
+	this->currentObject->activeGroups.emplace_back(&this->currentObject->groups["default"]);
 	this->countLines = 0;
+}
+
+void	ObjParser::NewObject(std::istringstream& ss)
+{
+	this->currentObject->activeGroups.clear();
+
+	std::string	currentObjectStr;
+	if (!(ss >> currentObjectStr))
+		currentObjectStr = "default";
+	this->currentObject = &this->objects[currentObjectStr];
+	this->currentObject->activeGroups.emplace_back(&this->currentObject->groups[currentObjectStr]);
+	if (ss >> std::ws; ss.peek() != EOF)
+		ThrowError("Too many arguments in `o`, you can only create one object at a time", this->countLines);
 }
 
 void	ObjParser::SetGroups(std::istringstream& ss)
 {
-	this->activeGroups.clear();
+	this->currentObject->activeGroups.clear();
 
 	std::string	currentGroup;
 	while (ss >> currentGroup)
-		this->activeGroups.emplace_back(&this->groups[currentGroup]);
-	if (this->activeGroups.size() == 0)
-		this->activeGroups.emplace_back(&this->groups["default"]);
+		this->currentObject->activeGroups.emplace_back(&this->currentObject->groups[currentGroup]);
+	if (this->currentObject->activeGroups.size() == 0)
+		this->currentObject->activeGroups.emplace_back(&this->currentObject->groups["default"]);
 }
 
 void	ObjParser::AddToGroups(std::string& prefix)
@@ -34,7 +48,7 @@ void	ObjParser::AddToGroups(std::string& prefix)
 	else
 		return;
 
-	for (Group* group : activeGroups) {
+	for (Group* group : this->currentObject->activeGroups) {
 		std::visit([&group](auto* v){
 			group->faceIndices.push_back(v->size());
 		}, vec);
@@ -67,6 +81,8 @@ void	ObjParser::FillRaw(std::ifstream& ifs)
 			this->raw.lines.emplace_back(NewLine(ss));
 		else if (prefix == "p")
 			this->raw.points.emplace_back(NewPoint(ss));
+		else if (prefix == "o")
+			this->NewObject(ss);
 		else if (prefix == "g")
 			this->SetGroups(ss);
 		else if (prefix == "#")

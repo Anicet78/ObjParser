@@ -27,6 +27,12 @@ struct Group {
 	std::vector<uint32_t>	pointIndices;
 };
 
+struct Object {
+	std::unordered_map<std::string, Group>	groups;
+	std::vector<Group*>						activeGroups;
+};
+
+
 /* struct MeshGPU {
 	std::vector<Vertex>		vertices;
 	std::vector<uint32_t>	indices;
@@ -39,6 +45,7 @@ class ObjParser {
 		ObjParser(void);
 		size_t	countLines;
 
+		void	NewObject(std::istringstream& ss);
 		void	SetGroups(std::istringstream& ss);
 		void	AddToGroups(std::string& prefix);
 		void	FillRaw(std::ifstream& ifs);
@@ -53,8 +60,8 @@ class ObjParser {
 
 	public:
 		OBJRaw									raw;
-		std::unordered_map<std::string, Group>	groups;
-		std::vector<Group*>						activeGroups;
+		std::unordered_map<std::string, Object>	objects;
+		Object*									currentObject;
 
 		static void	ParseFile(std::string filename);
 
