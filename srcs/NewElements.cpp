@@ -152,3 +152,23 @@ Line	ObjParser::NewLine(std::istringstream& ss)
 		ThrowError("Not enough arguments in `l`, not enough vertices given (should be at least 1)", this->countLines);
 	return (line);
 }
+
+Point	ObjParser::NewPoint(std::istringstream& ss)
+{
+	Point		point;
+	std::string	currentPoint;
+	while (ss >> currentPoint)
+	{
+		uint32_t v_indice;
+		int v = std::stoi(currentPoint);
+		if (v == 0)
+			ThrowError("Vertex indice must be referenced by its relative position (1-based) and thus cannot be '0' in `p`", currentPoint, this->countLines);
+		v_indice = GetIndex(this->raw.vertices, v);
+		if (v_indice == 0)
+			ThrowError("Vertex indice " + currentPoint + " not found in the vertices list in `p`, the vertices used must be declared before the point declaration", this->countLines);
+		point.vertices.emplace_back(v_indice);
+	}
+	if (point.vertices.size() < 1)
+		ThrowError("Not enough arguments in `p`, not enough vertices given (should be at least 1)", this->countLines);
+	return (point);
+}

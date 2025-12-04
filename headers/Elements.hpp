@@ -38,6 +38,10 @@ struct Line {
 	std::vector<LineElement> elements;
 };
 
+struct Point {
+	std::vector<uint32_t> vertices;
+};
+
 template <typename T>
 uint32_t	GetIndex(std::vector<T>& vector, int index)
 {

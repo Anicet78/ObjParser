@@ -25,6 +25,8 @@ void	ObjParser::FillRaw(std::ifstream& ifs)
 			this->raw.faces.emplace_back(NewFace(ss));
 		else if (prefix == "l")
 			this->raw.lines.emplace_back(NewLine(ss));
+			else if (prefix == "p")
+			this->raw.points.emplace_back(NewPoint(ss));
 		else if (prefix == "#")
 			continue;
 		else

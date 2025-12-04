@@ -14,6 +14,7 @@ struct OBJRaw {
 	std::vector<ParamSpaceVertex>	paramSpaceVertices;
 	std::vector<Face>				faces;
 	std::vector<Line>				lines;
+	std::vector<Point>				points;
 };
 
 /* struct MeshGPU {
@@ -36,6 +37,7 @@ class ObjParser {
 		ParamSpaceVertex	NewParamSpaceVertex(std::istringstream& ss);
 		Face				NewFace(std::istringstream& ss);
 		Line				NewLine(std::istringstream& ss);
+		Point				NewPoint(std::istringstream& ss);
 
 	public:
 		static void	ParseFile(std::string filename);
