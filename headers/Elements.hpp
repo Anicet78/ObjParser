@@ -12,12 +12,12 @@ typedef vec3 Normal;
 typedef vec3 ParamSpaceVertex;
 
 struct FaceElement {
-	uint32_t	v_indice;
-	uint32_t	vt_indice;
-	uint32_t	vn_indice;
+	uint32_t	vIndice;
+	uint32_t	vtIndice;
+	uint32_t	vnIndice;
 
 	FaceElement(uint32_t v, uint32_t vt, uint32_t vn) {
-		this->v_indice = v; this->vt_indice = vt; this->vn_indice = vn;
+		this->vIndice = v; this->vtIndice = vt; this->vnIndice = vn;
 	}
 };
 
@@ -26,11 +26,11 @@ struct Face {
 };
 
 struct LineElement {
-	uint32_t	v_indice;
-	uint32_t	vt_indice;
+	uint32_t	vIndice;
+	uint32_t	vtIndice;
 
 	LineElement(uint32_t v, uint32_t vt) {
-		this->v_indice = v; this->vt_indice = vt;
+		this->vIndice = v; this->vtIndice = vt;
 	}
 };
 

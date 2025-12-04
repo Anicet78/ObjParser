@@ -3,6 +3,9 @@
 
 # include <fstream>
 # include <sstream>
+# include <algorithm>
+# include <unordered_map>
+# include <variant>
 # include "color.hpp"
 # include "Elements.hpp"
 
@@ -17,6 +20,13 @@ struct OBJRaw {
 	std::vector<Point>				points;
 };
 
+// Groups
+struct Group {
+	std::vector<uint32_t>	faceIndices;
+	std::vector<uint32_t>	lineIndices;
+	std::vector<uint32_t>	pointIndices;
+};
+
 /* struct MeshGPU {
 	std::vector<Vertex>		vertices;
 	std::vector<uint32_t>	indices;
@@ -26,9 +36,11 @@ struct OBJRaw {
 class ObjParser {
 
 	private:
-		OBJRaw	raw;
-		size_t	countLines = 0;
+		ObjParser(void);
+		size_t	countLines;
 
+		void	SetGroups(std::istringstream& ss);
+		void	AddToGroups(std::string& prefix);
 		void	FillRaw(std::ifstream& ifs);
 
 		Vertex				NewVertex(std::istringstream& ss);
@@ -40,6 +52,10 @@ class ObjParser {
 		Point				NewPoint(std::istringstream& ss);
 
 	public:
+		OBJRaw									raw;
+		std::unordered_map<std::string, Group>	groups;
+		std::vector<Group*>						activeGroups;
+
 		static void	ParseFile(std::string filename);
 
 };
