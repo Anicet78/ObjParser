@@ -8,10 +8,12 @@
 
 // Raw Object File
 struct OBJRaw {
-	std::vector<Vertex>	vertices;
-	std::vector<UV>		uvs;
-	std::vector<Normal>	normals;
-	std::vector<Face>	faces;
+	std::vector<Vertex>				vertices;
+	std::vector<UV>					uvs;
+	std::vector<Normal>				normals;
+	std::vector<ParamSpaceVertex>	paramSpaceVertices;
+	std::vector<Face>				faces;
+	std::vector<Line>				lines;
 };
 
 /* struct MeshGPU {
@@ -24,19 +26,21 @@ class ObjParser {
 
 	private:
 		OBJRaw	raw;
+		size_t	countLines = 0;
 
 		void	FillRaw(std::ifstream& ifs);
+
+		Vertex				NewVertex(std::istringstream& ss);
+		UV					NewUV(std::istringstream& ss);
+		Normal				NewNormal(std::istringstream& ss);
+		ParamSpaceVertex	NewParamSpaceVertex(std::istringstream& ss);
+		Face				NewFace(std::istringstream& ss);
+		Line				NewLine(std::istringstream& ss);
 
 	public:
 		static void	ParseFile(std::string filename);
 
 };
-
-// Elements
-Vertex	NewVertex(std::istringstream& ss, size_t currentLine);
-UV		NewUV(std::istringstream& ss, size_t currentLine);
-Normal	NewNormal(std::istringstream& ss, size_t currentLine);
-Face	NewFace(std::istringstream& ss, OBJRaw& raw, size_t currentLine);
 
 // Errors
 [[noreturn]] void	ThrowError(std::string error);

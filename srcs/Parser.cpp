@@ -3,11 +3,10 @@
 void	ObjParser::FillRaw(std::ifstream& ifs)
 {
 	std::string	line;
-	size_t		count = 0;
 
 	while (std::getline(ifs, line))
 	{
-		count++;
+		this->countLines++;
 
 		std::istringstream ss(line);
 		std::string prefix;
@@ -15,17 +14,21 @@ void	ObjParser::FillRaw(std::ifstream& ifs)
 			continue;
 
 		if (prefix == "v")
-			this->raw.vertices.emplace_back(NewVertex(ss, count));
+			this->raw.vertices.emplace_back(NewVertex(ss));
 		else if (prefix == "vt")
-			this->raw.uvs.emplace_back(NewUV(ss, count));
+			this->raw.uvs.emplace_back(NewUV(ss));
 		else if (prefix == "vn")
-			this->raw.normals.emplace_back(NewNormal(ss, count));
+			this->raw.normals.emplace_back(NewNormal(ss));
+		else if (prefix == "vp")
+			this->raw.paramSpaceVertices.emplace_back(NewParamSpaceVertex(ss));
 		else if (prefix == "f")
-			this->raw.faces.emplace_back(NewFace(ss, this->raw, count));
+			this->raw.faces.emplace_back(NewFace(ss));
+		else if (prefix == "l")
+			this->raw.lines.emplace_back(NewLine(ss));
 		else if (prefix == "#")
 			continue;
 		else
-			ThrowError("Element not recognized", prefix, count);
+			ThrowError("Element not recognized", prefix, this->countLines);
 	}
 }
 

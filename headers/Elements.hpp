@@ -9,6 +9,7 @@
 typedef vec4 Vertex;
 typedef vec3 UV;
 typedef vec3 Normal;
+typedef vec3 ParamSpaceVertex;
 
 struct FaceElement {
 	uint32_t	v_indice;
@@ -22,6 +23,19 @@ struct FaceElement {
 
 struct Face {
 	std::vector<FaceElement> elements;
+};
+
+struct LineElement {
+	uint32_t	v_indice;
+	uint32_t	vt_indice;
+
+	LineElement(uint32_t v, uint32_t vt) {
+		this->v_indice = v; this->vt_indice = vt;
+	}
+};
+
+struct Line {
+	std::vector<LineElement> elements;
 };
 
 template <typename T>

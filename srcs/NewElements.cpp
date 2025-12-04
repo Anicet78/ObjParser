@@ -1,65 +1,84 @@
 #include "ObjParser.hpp"
 
-Vertex	NewVertex(std::istringstream& ss, size_t currentLine)
+Vertex	ObjParser::NewVertex(std::istringstream& ss)
 {
-	float x, y, z, w = 1.0;
+	float x, y, z, w = 1.0f;
 	if (!(ss >> x >> y >> z))
 	{
 		if (ss.eof())
-			ThrowError("Not enough arguments in `v` (x, y, z, [w])", currentLine);
+			ThrowError("Not enough arguments in `v` (x, y, z, [w])", this->countLines);
 		else
-			ThrowError("Invalid coordinate argument in `v`", ss, currentLine);
+			ThrowError("Invalid coordinate argument in `v`", ss, this->countLines);
 	}
 	if (!(ss >> w) && !ss.eof())
-		ThrowError("Invalid scale argument in `v`", ss, currentLine);
+		ThrowError("Invalid scale argument in `v`", ss, this->countLines);
 	if (ss >> std::ws; ss.peek() != EOF)
-		ThrowError("Too many arguments in `v`", currentLine);
+		ThrowError("Too many arguments in `v`", this->countLines);
 	return (Vertex(x, y, z, w));
 }
 
-UV	NewUV(std::istringstream& ss, size_t currentLine)
+UV	ObjParser::NewUV(std::istringstream& ss)
 {
-	float u, v = 0, w = 0;
+	float u, v = 0.0f, w = 0.0f;
 	if (!(ss >> u))
 	{
 		if (ss.eof())
-			ThrowError("Not enough argument in `vt` (u, [v, w])", currentLine);
+			ThrowError("Not enough argument in `vt` (u, [v, w])", this->countLines);
 		else
-			ThrowError("Invalid coordinate argument in `vt`", ss, currentLine);
+			ThrowError("Invalid coordinate argument in `vt`", ss, this->countLines);
 	}
 	if (!(ss >> v) && !ss.eof())
-		ThrowError("Invalid coordinate argument in `vt`", ss, currentLine);
+		ThrowError("Invalid coordinate argument in `vt`", ss, this->countLines);
 	if (!ss.eof() && !(ss >> w) && !ss.eof())
-		ThrowError("Invalid coordinate argument in `vt`", ss, currentLine);
+		ThrowError("Invalid coordinate argument in `vt`", ss, this->countLines);
 	if (ss >> std::ws; ss.peek() != EOF)
-		ThrowError("Too many arguments in `vt`", currentLine);
+		ThrowError("Too many arguments in `vt`", this->countLines);
 	if (u < 0 || u > 1)
-		ThrowError("Invalid u coordinate in `vt`, every coordinates should be in [0,1]", currentLine);
+		ThrowError("Invalid u coordinate in `vt`, every coordinates should be in [0,1]", this->countLines);
 	if (v < 0 || v > 1)
-		ThrowError("Invalid v coordinate in `vt`, every coordinates should be in [0,1]", currentLine);
+		ThrowError("Invalid v coordinate in `vt`, every coordinates should be in [0,1]", this->countLines);
 	if (w < 0 || w > 1)
-		ThrowError("Invalid w coordinate in `vt`, every coordinates should be in [0,1]", currentLine);
+		ThrowError("Invalid w coordinate in `vt`, every coordinates should be in [0,1]", this->countLines);
 	return (UV(u, v, w));
 }
 
-Normal	NewNormal(std::istringstream& ss, size_t currentLine)
+Normal	ObjParser::NewNormal(std::istringstream& ss)
 {
 	float x, y, z;
 	if (!(ss >> x >> y >> z))
 	{
 		if (ss.eof())
-			ThrowError("Not enough arguments in `vn` (x, y, z)", currentLine);
+			ThrowError("Not enough arguments in `vn` (x, y, z)", this->countLines);
 		else
-			ThrowError("Invalid normal argument in `vn`", ss, currentLine);
+			ThrowError("Invalid normal argument in `vn`", ss, this->countLines);
 	}
 	if (ss >> std::ws; ss.peek() != EOF)
-		ThrowError("Too many arguments in `vt`", currentLine);
+		ThrowError("Too many arguments in `vt`", this->countLines);
 	return (Normal(x, y, z).normalize());
 }
 
-Face	NewFace(std::istringstream& ss, OBJRaw& raw, size_t currentLine)
+ParamSpaceVertex	ObjParser::NewParamSpaceVertex(std::istringstream& ss)
 {
-	Face face;
+	float u, v = 0.0f, w = 0.0f;
+	if (!(ss >> u))
+	{
+		if (ss.eof())
+			ThrowError("Not enough argument in `vp` (u, [v, w])", this->countLines);
+		else
+			ThrowError("Invalid point argument in `vp`", ss, this->countLines);
+	}
+	if (!(ss >> v) && !ss.eof())
+		ThrowError("Invalid point argument in `vp`", ss, this->countLines);
+	if (!ss.eof() && !(ss >> w) && !ss.eof())
+		ThrowError("Invalid point argument in `vp`", ss, this->countLines);
+	if (ss >> std::ws; ss.peek() != EOF)
+		ThrowError("Too many arguments in `vp`", this->countLines);
+	return (ParamSpaceVertex(u, v, w));
+}
+
+Face	ObjParser::NewFace(std::istringstream& ss)
+{
+	Face		face;
 	std::string	currentFace;
 	while (ss >> currentFace)
 	{
@@ -67,35 +86,69 @@ Face	NewFace(std::istringstream& ss, OBJRaw& raw, size_t currentLine)
 		if (std::getline(ss, currentFace, '/'))
 		{
 			if (currentFace.empty())
-				ThrowError("No vertex indice defined in `f`", currentLine);
+				ThrowError("No vertex indice defined in `f`", this->countLines);
 			int v = std::stoi(currentFace);
 			if (v == 0)
-				ThrowError("Vertex indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, currentLine);
-			v_indice = GetIndex(raw.vertices, v);
+				ThrowError("Vertex indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, this->countLines);
+			v_indice = GetIndex(this->raw.vertices, v);
 			if (v_indice == 0)
-				ThrowError("Vertex indice " + currentFace + " not found in the vertices list in `f`, the vertices used must be declared before the face declaration", currentLine);
+				ThrowError("Vertex indice " + currentFace + " not found in the vertices list in `f`, the vertices used must be declared before the face declaration", this->countLines);
 		}
 		if (std::getline(ss, currentFace, '/') && !currentFace.empty())
 		{
 			int vt = std::stoi(currentFace);
 			if (vt == 0)
-				ThrowError("Texture indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, currentLine);
-			vt_indice = GetIndex(raw.uvs, vt);
+				ThrowError("Texture indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, this->countLines);
+			vt_indice = GetIndex(this->raw.uvs, vt);
 			if (vt_indice == 0)
-				ThrowError("Texture indice " + currentFace + " not found in the uvs list in `f`, the uvs used must be declared before the face declaration", currentLine);
+				ThrowError("Texture indice " + currentFace + " not found in the uvs list in `f`, the uvs used must be declared before the face declaration", this->countLines);
 		}
 		if (std::getline(ss, currentFace, '/') && !currentFace.empty())
 		{
 			int vn = std::stoi(currentFace);
 			if (vn == 0)
-				ThrowError("Normal indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, currentLine);
-			vn_indice = GetIndex(raw.normals, vn);
+				ThrowError("Normal indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, this->countLines);
+			vn_indice = GetIndex(this->raw.normals, vn);
 			if (vn_indice == 0)
-				ThrowError("Normal indice " + currentFace + " not found in the normals list in `f`, the normals used must be declared before the face declaration", currentLine);
+				ThrowError("Normal indice " + currentFace + " not found in the normals list in `f`, the normals used must be declared before the face declaration", this->countLines);
 		}
 		face.elements.emplace_back(FaceElement(v_indice, vt_indice, vn_indice));
 	}
 	if (face.elements.size() < 3)
-		ThrowError("Not enough arguments in `f`, not enough vertices given (should be at least 3)", currentLine);
+		ThrowError("Not enough arguments in `f`, not enough vertices given (should be at least 3)", this->countLines);
 	return (face);
+}
+
+Line	ObjParser::NewLine(std::istringstream& ss)
+{
+	Line		line;
+	std::string	currentLine;
+	while (ss >> currentLine)
+	{
+		uint32_t v_indice, vt_indice = 0;
+		if (std::getline(ss, currentLine, '/'))
+		{
+			if (currentLine.empty())
+				ThrowError("No vertex indice defined in `l`", this->countLines);
+			int v = std::stoi(currentLine);
+			if (v == 0)
+				ThrowError("Vertex indice must be referenced by its relative position (1-based) and thus cannot be '0' in `l`", currentLine, this->countLines);
+			v_indice = GetIndex(this->raw.vertices, v);
+			if (v_indice == 0)
+				ThrowError("Vertex indice " + currentLine + " not found in the vertices list in `l`, the vertices used must be declared before the line declaration", this->countLines);
+		}
+		if (std::getline(ss, currentLine, '/') && !currentLine.empty())
+		{
+			int vt = std::stoi(currentLine);
+			if (vt == 0)
+				ThrowError("Texture indice must be referenced by its relative position (1-based) and thus cannot be '0' in `l`", currentLine, this->countLines);
+			vt_indice = GetIndex(this->raw.uvs, vt);
+			if (vt_indice == 0)
+				ThrowError("Texture indice " + currentLine + " not found in the uvs list in `l`, the uvs used must be declared before the line declaration", this->countLines);
+		}
+		line.elements.emplace_back(LineElement(v_indice, vt_indice));
+	}
+	if (line.elements.size() < 1)
+		ThrowError("Not enough arguments in `l`, not enough vertices given (should be at least 1)", this->countLines);
+	return (line);
 }
