@@ -82,37 +82,37 @@ Face	ObjParser::NewFace(std::istringstream& ss)
 	std::string	currentFace;
 	while (ss >> currentFace)
 	{
-		uint32_t v_indice, vt_indice = 0, vn_indice = 0;
+		uint32_t v_index, vt_index = 0, vn_index = 0;
 		if (std::getline(ss, currentFace, '/'))
 		{
 			if (currentFace.empty())
-				ThrowError("No vertex indice defined in `f`", this->countLines);
+				ThrowError("No vertex index defined in `f`", this->countLines);
 			int v = std::stoi(currentFace);
 			if (v == 0)
-				ThrowError("Vertex indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, this->countLines);
-			v_indice = GetIndex(this->raw.vertices, v);
-			if (v_indice == 0)
-				ThrowError("Vertex indice " + currentFace + " not found in the vertices list in `f`, the vertices used must be declared before the face declaration", this->countLines);
+				ThrowError("Vertex index must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, this->countLines);
+			v_index = GetIndex(this->raw.vertices, v);
+			if (v_index == 0)
+				ThrowError("Vertex index " + currentFace + " not found in the vertices list in `f`, the vertices used must be declared before the face declaration", this->countLines);
 		}
 		if (std::getline(ss, currentFace, '/') && !currentFace.empty())
 		{
 			int vt = std::stoi(currentFace);
 			if (vt == 0)
-				ThrowError("Texture indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, this->countLines);
-			vt_indice = GetIndex(this->raw.uvs, vt);
-			if (vt_indice == 0)
-				ThrowError("Texture indice " + currentFace + " not found in the uvs list in `f`, the uvs used must be declared before the face declaration", this->countLines);
+				ThrowError("Texture index must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, this->countLines);
+			vt_index = GetIndex(this->raw.uvs, vt);
+			if (vt_index == 0)
+				ThrowError("Texture index " + currentFace + " not found in the uvs list in `f`, the uvs used must be declared before the face declaration", this->countLines);
 		}
 		if (std::getline(ss, currentFace, '/') && !currentFace.empty())
 		{
 			int vn = std::stoi(currentFace);
 			if (vn == 0)
-				ThrowError("Normal indice must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, this->countLines);
-			vn_indice = GetIndex(this->raw.normals, vn);
-			if (vn_indice == 0)
-				ThrowError("Normal indice " + currentFace + " not found in the normals list in `f`, the normals used must be declared before the face declaration", this->countLines);
+				ThrowError("Normal index must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, this->countLines);
+			vn_index = GetIndex(this->raw.normals, vn);
+			if (vn_index == 0)
+				ThrowError("Normal index " + currentFace + " not found in the normals list in `f`, the normals used must be declared before the face declaration", this->countLines);
 		}
-		face.elements.emplace_back(FaceElement(v_indice, vt_indice, vn_indice));
+		face.elements.emplace_back(FaceElement(v_index, vt_index, vn_index));
 	}
 	if (face.elements.size() < 3)
 		ThrowError("Not enough arguments in `f`, not enough vertices given (should be at least 3)", this->countLines);
@@ -125,28 +125,28 @@ Line	ObjParser::NewLine(std::istringstream& ss)
 	std::string	currentLine;
 	while (ss >> currentLine)
 	{
-		uint32_t v_indice, vt_indice = 0;
+		uint32_t v_index, vt_index = 0;
 		if (std::getline(ss, currentLine, '/'))
 		{
 			if (currentLine.empty())
-				ThrowError("No vertex indice defined in `l`", this->countLines);
+				ThrowError("No vertex index defined in `l`", this->countLines);
 			int v = std::stoi(currentLine);
 			if (v == 0)
-				ThrowError("Vertex indice must be referenced by its relative position (1-based) and thus cannot be '0' in `l`", currentLine, this->countLines);
-			v_indice = GetIndex(this->raw.vertices, v);
-			if (v_indice == 0)
-				ThrowError("Vertex indice " + currentLine + " not found in the vertices list in `l`, the vertices used must be declared before the line declaration", this->countLines);
+				ThrowError("Vertex index must be referenced by its relative position (1-based) and thus cannot be '0' in `l`", currentLine, this->countLines);
+			v_index = GetIndex(this->raw.vertices, v);
+			if (v_index == 0)
+				ThrowError("Vertex index " + currentLine + " not found in the vertices list in `l`, the vertices used must be declared before the line declaration", this->countLines);
 		}
 		if (std::getline(ss, currentLine, '/') && !currentLine.empty())
 		{
 			int vt = std::stoi(currentLine);
 			if (vt == 0)
-				ThrowError("Texture indice must be referenced by its relative position (1-based) and thus cannot be '0' in `l`", currentLine, this->countLines);
-			vt_indice = GetIndex(this->raw.uvs, vt);
-			if (vt_indice == 0)
-				ThrowError("Texture indice " + currentLine + " not found in the uvs list in `l`, the uvs used must be declared before the line declaration", this->countLines);
+				ThrowError("Texture index must be referenced by its relative position (1-based) and thus cannot be '0' in `l`", currentLine, this->countLines);
+			vt_index = GetIndex(this->raw.uvs, vt);
+			if (vt_index == 0)
+				ThrowError("Texture index " + currentLine + " not found in the uvs list in `l`, the uvs used must be declared before the line declaration", this->countLines);
 		}
-		line.elements.emplace_back(LineElement(v_indice, vt_indice));
+		line.elements.emplace_back(LineElement(v_index, vt_index));
 	}
 	if (line.elements.size() < 1)
 		ThrowError("Not enough arguments in `l`, not enough vertices given (should be at least 1)", this->countLines);
@@ -159,14 +159,14 @@ Point	ObjParser::NewPoint(std::istringstream& ss)
 	std::string	currentPoint;
 	while (ss >> currentPoint)
 	{
-		uint32_t v_indice;
+		uint32_t v_index;
 		int v = std::stoi(currentPoint);
 		if (v == 0)
-			ThrowError("Vertex indice must be referenced by its relative position (1-based) and thus cannot be '0' in `p`", currentPoint, this->countLines);
-		v_indice = GetIndex(this->raw.vertices, v);
-		if (v_indice == 0)
-			ThrowError("Vertex indice " + currentPoint + " not found in the vertices list in `p`, the vertices used must be declared before the point declaration", this->countLines);
-		point.vertices.emplace_back(v_indice);
+			ThrowError("Vertex index must be referenced by its relative position (1-based) and thus cannot be '0' in `p`", currentPoint, this->countLines);
+		v_index = GetIndex(this->raw.vertices, v);
+		if (v_index == 0)
+			ThrowError("Vertex index " + currentPoint + " not found in the vertices list in `p`, the vertices used must be declared before the point declaration", this->countLines);
+		point.vertices.emplace_back(v_index);
 	}
 	if (point.vertices.size() < 1)
 		ThrowError("Not enough arguments in `p`, not enough vertices given (should be at least 1)", this->countLines);
