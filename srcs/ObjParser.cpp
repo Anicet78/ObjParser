@@ -13,7 +13,7 @@ ObjParser::ObjParser(void)
 void	ObjParser::AddMaterialList(std::istringstream& ss)
 {
 	std::string mtlFileName;
-	while (!(ss >> mtlFileName))
+	while (ss >> mtlFileName)
 	{
 		MaterialList newMaterialList = MtlParser::ImportMtl(mtlFileName);
 	}
