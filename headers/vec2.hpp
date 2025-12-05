@@ -10,6 +10,7 @@ struct vec2 {
 	float	x;
 	float	y;
 
+	vec2(void);
 	vec2(float x, float y);
 	vec2(const vec2& vec) = default;
 
@@ -44,6 +45,12 @@ struct vec2 {
 	vec2&	normalize(void);
 
 };
+
+inline vec2::vec2(void)
+{
+	this->x = 0.0f;
+	this->y = 0.0f;
+}
 
 inline vec2::vec2(float x, float y)
 {

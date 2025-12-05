@@ -8,8 +8,9 @@ int	main(int ac, char **av)
 		return (1);
 	}
 
+	ObjParser	objParser;
 	try {
-		ObjParser::ParseFile(av[1]);
+		objParser.ParseFile(av[1]);
 	}
 	catch (std::exception& e) {
 		std::cerr << COLOR_LIGHT_RED << e.what() << COLOR_NC << std::endl;

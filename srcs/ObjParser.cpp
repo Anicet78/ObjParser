@@ -2,10 +2,23 @@
 
 ObjParser::ObjParser(void)
 {
+	this->countLines = 0;
 	this->currentObject = &this->objects["default"];
 	this->currentObject->activeGroups.emplace_back(&this->currentObject->groups["default"]);
-	this->countLines = 0;
 	this->currentSmoothingGroup = 0;
+	this->currentMergingGroup = -1;
+	this->currentMergingResolution = 0;
+}
+
+void	ObjParser::AddMaterialList(std::istringstream& ss)
+{
+	std::string mtlFileName;
+	while (!(ss >> mtlFileName))
+	{
+		MaterialList newMaterialList = MtlParser::ImportMtl(mtlFileName);
+	}
+	if (this->materials.size() == 0)
+		ThrowError("Not enough arguments in `mtllib` ('mtlFileName', [...])", this->fileName);
 }
 
 void	ObjParser::FillRaw(std::ifstream& ifs)
@@ -34,6 +47,8 @@ void	ObjParser::FillRaw(std::ifstream& ifs)
 			this->raw.lines.emplace_back(NewLine(ss));
 		else if (prefix == "p")
 			this->raw.points.emplace_back(NewPoint(ss));
+		else if (prefix == "mtllib")
+			this->AddMaterialList(ss);
 		else if (prefix == "o")
 			this->SetObject(ss);
 		else if (prefix == "g")
@@ -42,25 +57,22 @@ void	ObjParser::FillRaw(std::ifstream& ifs)
 			this->SetSmoothingGroup(ss);
 		else if (prefix == "mg")
 			this->SetMergingGroup(ss);
-		// else if (prefix == "mtllib")
-			// this->
 		else if (prefix == "#")
 			continue;
 		else // May skip instead later
-			ThrowError("Element not recognized", prefix, this->countLines);
+			ThrowError("Element not recognized", prefix, this->countLines, this->fileName);
 		this->AddToGroups(prefix);
 	}
 }
 
 void	ObjParser::ParseFile(std::string filename)
 {
-	ObjParser	parser;
-
 	std::ifstream ifs(filename);
 	if (!ifs.is_open())
 		ThrowError("Could not open file `" + filename + "`: " + std::strerror(ifs.rdstate()));
+	this->fileName = filename;
 
-	parser.FillRaw(ifs);
+	this->FillRaw(ifs);
 
 	ifs.close();
 }

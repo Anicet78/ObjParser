@@ -8,9 +8,11 @@ OBJ_DIR		= ./objs/
 CXXFLAGS += -I$(HEADERS)
 
 SRCS		=	main.cpp		\
-				Parser.cpp		\
-				NewElements.cpp	\
+				ObjParser.cpp	\
+				MtlParser.cpp	\
+				Elements.cpp	\
 				Groups.cpp		\
+				Material.cpp	\
 				error.cpp
 
 OBJS		= $(patsubst %.cpp, $(OBJ_DIR)%.o, $(SRCS))

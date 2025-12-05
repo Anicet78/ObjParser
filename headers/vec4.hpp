@@ -12,6 +12,7 @@ struct vec4 {
 	float	z;
 	float	w;
 
+	vec4(void);
 	vec4(float x, float y, float z, float w);
 	vec4(const vec4& vec) = default;
 
@@ -46,6 +47,14 @@ struct vec4 {
 	vec4&	normalize(void);
 
 };
+
+inline vec4::vec4(void)
+{
+	this->x = 0.0f;
+	this->y = 0.0f;
+	this->z = 0.0f;
+	this->w = 0.0f;
+}
 
 inline vec4::vec4(float x, float y, float z, float w)
 {

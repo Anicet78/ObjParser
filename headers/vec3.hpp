@@ -11,6 +11,7 @@ struct vec3 {
 	float	y;
 	float	z;
 
+	vec3(void);
 	vec3(float x, float y, float z);
 	vec3(const vec3& vec) = default;
 
@@ -45,6 +46,13 @@ struct vec3 {
 	vec3&	normalize(void);
 
 };
+
+inline vec3::vec3(void)
+{
+	this->x = 0.0f;
+	this->y = 0.0f;
+	this->z = 0.0f;
+}
 
 inline vec3::vec3(float x, float y, float z)
 {

@@ -22,6 +22,7 @@ struct FaceElement {
 
 struct Face {
 	std::vector<FaceElement>	elements;
+	std::string					materialName;
 	int							smoothingGroupIndex;
 };
 

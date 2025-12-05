@@ -10,7 +10,7 @@ void	ObjParser::SetObject(std::istringstream& ss)
 	this->currentObject = &this->objects[currentObjectStr];
 	this->currentObject->activeGroups.emplace_back(&this->currentObject->groups[currentObjectStr]);
 	if (ss >> std::ws; ss.peek() != EOF)
-		ThrowError("Too many arguments in `o`, you can only create one object at a time", this->countLines);
+		ThrowError("Too many arguments in `o`, you can only create one object at a time", this->countLines, this->fileName);
 }
 
 void	ObjParser::SetGroups(std::istringstream& ss)
@@ -39,7 +39,7 @@ void	ObjParser::SetSmoothingGroup(std::istringstream& ss)
 		if (value == "on")
 			this->currentSmoothingGroup = 1;
 		else if (value != "off")
-			ThrowError("Invalid parameter in `s`, the group id must be a number or either \"on\" or \"off\"", value, this->countLines);
+			ThrowError("Invalid parameter in `s`, the group id must be a number or either \"on\" or \"off\"", value, this->countLines, this->fileName);
 	}
 }
 
@@ -63,16 +63,16 @@ void	ObjParser::SetMergingGroup(std::istringstream& ss)
 		ss.clear();
 		ss >> value;
 		if (value != "off")
-			ThrowError("Invalid parameter in `mg`, the group id must be a number or \"off\"", value, this->countLines);
+			ThrowError("Invalid parameter in `mg`, the group id must be a number or \"off\"", value, this->countLines, this->fileName);
 		return ;
 	}
 
 	if (!(ss >> this->currentMergingResolution))
 	{
 		if (ss.eof())
-			ThrowError("Not enough argument in `mg` (group_number, res)", this->countLines);
+			ThrowError("Not enough argument in `mg` (group_number, res)", this->countLines, this->fileName);
 		else
-			ThrowError("Invalid parameter in `mg`, the resolution must be a float", ss, this->countLines);
+			ThrowError("Invalid parameter in `mg`, the resolution must be a float", ss, this->countLines, this->fileName);
 	}
 }
 

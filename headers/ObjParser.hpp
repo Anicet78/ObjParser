@@ -34,12 +34,12 @@ struct MergingGroup {
 	float	resolution;
 };
 
+typedef std::unordered_map<std::string, Group>	GroupList;
 struct Object {
 	GroupList			groups;
 	std::vector<Group*>	activeGroups;
 };
 
-typedef std::unordered_map<std::string, Group>	GroupList;
 typedef std::unordered_map<uint32_t, SmoothingGroup> SmoothingGroupList;
 typedef std::unordered_map<std::string, Object>	ObjectList;
 
@@ -52,9 +52,12 @@ typedef std::unordered_map<std::string, Object>	ObjectList;
 class ObjParser {
 
 	private:
-		ObjParser(void);
+		std::string	fileName;
 		size_t		countLines;
+
 		std::string	currentMaterial;
+
+		void	AddMaterialList(std::istringstream& ss);
 
 		Object*	currentObject;
 		int		currentSmoothingGroup;
@@ -66,7 +69,6 @@ class ObjParser {
 		void	SetSmoothingGroup(std::istringstream& ss);
 		void	SetMergingGroup(std::istringstream& ss);
 		void	AddToGroups(std::string& prefix);
-		void	FillRaw(std::ifstream& ifs);
 
 		Vertex				NewVertex(std::istringstream& ss);
 		UV					NewUV(std::istringstream& ss);
@@ -76,20 +78,17 @@ class ObjParser {
 		Line				NewLine(std::istringstream& ss);
 		Point				NewPoint(std::istringstream& ss);
 
+		void	FillRaw(std::ifstream& ifs);
+
 	public:
 		OBJRaw				raw;
 		ObjectList			objects;
 		SmoothingGroupList	smoothingGroups;
 		MaterialList		materials;
 
-		static void	ParseFile(std::string filename);
+		ObjParser(void);
+		void	ParseFile(std::string filename);
 
 };
-
-// Errors
-[[noreturn]] void	ThrowError(std::string error);
-[[noreturn]] void	ThrowError(std::string error, size_t line);
-[[noreturn]] void	ThrowError(std::string error, std::string& token, size_t line);
-[[noreturn]] void	ThrowError(std::string error, std::istringstream& ss, size_t line);
 
 #endif // !OBJ_PARSER_HPP
