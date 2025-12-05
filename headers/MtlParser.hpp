@@ -4,6 +4,8 @@
 # include "parser.hpp"
 # include "Material.hpp"
 
+typedef std::unordered_map<uint32_t, Material> MaterialList;
+
 class MtlParser {
 
 	private:
@@ -11,7 +13,7 @@ class MtlParser {
 		size_t	countLines;
 
 	public:
-		static void	ParseFile(std::string filename);
+		static MaterialList	MtlParser::ImportMtl(std::string filename);
 
 };
 

@@ -2,7 +2,6 @@
 # define OBJ_PARSER_HPP
 
 # include <algorithm>
-# include <unordered_map>
 # include <variant>
 # include "parser.hpp"
 # include "Elements.hpp"
@@ -35,12 +34,14 @@ struct MergingGroup {
 	float	resolution;
 };
 
-
 struct Object {
-	std::unordered_map<std::string, Group>	groups;
-	std::vector<Group*>						activeGroups;
+	GroupList			groups;
+	std::vector<Group*>	activeGroups;
 };
 
+typedef std::unordered_map<std::string, Group>	GroupList;
+typedef std::unordered_map<uint32_t, SmoothingGroup> SmoothingGroupList;
+typedef std::unordered_map<std::string, Object>	ObjectList;
 
 /* struct MeshGPU {
 	std::vector<Vertex>		vertices;
@@ -52,7 +53,8 @@ class ObjParser {
 
 	private:
 		ObjParser(void);
-		size_t	countLines;
+		size_t		countLines;
+		std::string	currentMaterial;
 
 		Object*	currentObject;
 		int		currentSmoothingGroup;
@@ -75,10 +77,10 @@ class ObjParser {
 		Point				NewPoint(std::istringstream& ss);
 
 	public:
-		OBJRaw											raw;
-		std::unordered_map<std::string, Object>			objects;
-		std::unordered_map<uint32_t, SmoothingGroup>	smoothingGroups;
-		std::unordered_map<std::string, Material>		materials;
+		OBJRaw				raw;
+		ObjectList			objects;
+		SmoothingGroupList	smoothingGroups;
+		MaterialList		materials;
 
 		static void	ParseFile(std::string filename);
 

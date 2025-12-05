@@ -1,6 +1,6 @@
 #include "MtlParser.hpp"
 
-void	MtlParser::ParseFile(std::string filename)
+MaterialList	MtlParser::ImportMtl(std::string filename)
 {
 	MtlParser	parser;
 

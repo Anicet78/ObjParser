@@ -5,6 +5,7 @@
 # include <fstream>
 # include <sstream>
 # include <exception>
+# include <unordered_map>
 # include "color.hpp"
 
 [[noreturn]] void	ThrowError(std::string error);
