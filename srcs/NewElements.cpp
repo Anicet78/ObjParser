@@ -116,6 +116,7 @@ Face	ObjParser::NewFace(std::istringstream& ss)
 	}
 	if (face.elements.size() < 3)
 		ThrowError("Not enough arguments in `f`, not enough vertices given (should be at least 3)", this->countLines);
+	face.smoothingGroupIndex = this->currentSmoothingGroup;
 	return (face);
 }
 

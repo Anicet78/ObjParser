@@ -10,6 +10,7 @@ CXXFLAGS += -I$(HEADERS)
 SRCS		=	main.cpp		\
 				Parser.cpp		\
 				NewElements.cpp	\
+				Groups.cpp		\
 				error.cpp
 
 OBJS		= $(patsubst %.cpp, $(OBJ_DIR)%.o, $(SRCS))

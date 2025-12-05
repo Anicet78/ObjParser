@@ -27,6 +27,10 @@ struct Group {
 	std::vector<uint32_t>	pointIndices;
 };
 
+struct SmoothingGroup {
+	std::vector<uint32_t>	faceIndices;
+};
+
 struct Object {
 	std::unordered_map<std::string, Group>	groups;
 	std::vector<Group*>						activeGroups;
@@ -45,9 +49,13 @@ class ObjParser {
 		ObjParser(void);
 		size_t	countLines;
 
+		Object*	currentObject;
+		int		currentSmoothingGroup;
+
 		void	NewObject(std::istringstream& ss);
 		void	SetGroups(std::istringstream& ss);
 		void	AddToGroups(std::string& prefix);
+		void	SetSmoothingGroup(std::istringstream& ss);
 		void	FillRaw(std::ifstream& ifs);
 
 		Vertex				NewVertex(std::istringstream& ss);
@@ -59,9 +67,9 @@ class ObjParser {
 		Point				NewPoint(std::istringstream& ss);
 
 	public:
-		OBJRaw									raw;
-		std::unordered_map<std::string, Object>	objects;
-		Object*									currentObject;
+		OBJRaw											raw;
+		std::unordered_map<std::string, Object>			objects;
+		std::unordered_map<uint32_t, SmoothingGroup>	smoothingGroups;
 
 		static void	ParseFile(std::string filename);
 

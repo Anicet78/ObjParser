@@ -22,7 +22,8 @@ struct FaceElement {
 };
 
 struct Face {
-	std::vector<FaceElement> elements;
+	std::vector<FaceElement>	elements;
+	int							smoothingGroupIndex;
 };
 
 struct LineElement {

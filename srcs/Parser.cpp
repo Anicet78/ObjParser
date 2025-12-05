@@ -5,54 +5,7 @@ ObjParser::ObjParser(void)
 	this->currentObject = &this->objects["default"];
 	this->currentObject->activeGroups.emplace_back(&this->currentObject->groups["default"]);
 	this->countLines = 0;
-}
-
-void	ObjParser::NewObject(std::istringstream& ss)
-{
-	this->currentObject->activeGroups.clear();
-
-	std::string	currentObjectStr;
-	if (!(ss >> currentObjectStr))
-		currentObjectStr = "default";
-	this->currentObject = &this->objects[currentObjectStr];
-	this->currentObject->activeGroups.emplace_back(&this->currentObject->groups[currentObjectStr]);
-	if (ss >> std::ws; ss.peek() != EOF)
-		ThrowError("Too many arguments in `o`, you can only create one object at a time", this->countLines);
-}
-
-void	ObjParser::SetGroups(std::istringstream& ss)
-{
-	this->currentObject->activeGroups.clear();
-
-	std::string	currentGroup;
-	while (ss >> currentGroup)
-		this->currentObject->activeGroups.emplace_back(&this->currentObject->groups[currentGroup]);
-	if (this->currentObject->activeGroups.size() == 0)
-		this->currentObject->activeGroups.emplace_back(&this->currentObject->groups["default"]);
-}
-
-void	ObjParser::AddToGroups(std::string& prefix)
-{
-	std::variant<
-		std::vector<Face>*,
-		std::vector<Line>*,
-		std::vector<Point>*
-	> vec;
-
-	if (prefix == "f")
-		vec = &raw.faces;
-	else if (prefix == "l")
-		vec = &raw.lines;
-	else if (prefix == "p")
-		vec = &raw.points;
-	else
-		return;
-
-	for (Group* group : this->currentObject->activeGroups) {
-		std::visit([&group](auto* v){
-			group->faceIndices.push_back(v->size());
-		}, vec);
-	}
+	this->currentSmoothingGroup = 0;
 }
 
 void	ObjParser::FillRaw(std::ifstream& ifs)
@@ -85,6 +38,8 @@ void	ObjParser::FillRaw(std::ifstream& ifs)
 			this->NewObject(ss);
 		else if (prefix == "g")
 			this->SetGroups(ss);
+		else if (prefix == "s")
+			this->SetSmoothingGroup(ss);
 		else if (prefix == "#")
 			continue;
 		else
