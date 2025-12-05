@@ -193,4 +193,4 @@ inline std::ostream& operator<<(std::ostream& os, const vec2& v)
 	return os;
 }
 
-#endif // VEC2_HPP
+#endif // !VEC2_HPP

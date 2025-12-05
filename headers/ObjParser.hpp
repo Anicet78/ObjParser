@@ -1,13 +1,12 @@
-#ifndef PARSER_HPP
-# define PARSER_HPP
+#ifndef OBJ_PARSER_HPP
+# define OBJ_PARSER_HPP
 
-# include <fstream>
-# include <sstream>
 # include <algorithm>
 # include <unordered_map>
 # include <variant>
-# include "color.hpp"
+# include "parser.hpp"
 # include "Elements.hpp"
+# include "MtlParser.hpp"
 
 // Raw Object File
 struct OBJRaw {
@@ -79,6 +78,7 @@ class ObjParser {
 		OBJRaw											raw;
 		std::unordered_map<std::string, Object>			objects;
 		std::unordered_map<uint32_t, SmoothingGroup>	smoothingGroups;
+		std::unordered_map<std::string, Material>		materials;
 
 		static void	ParseFile(std::string filename);
 
@@ -90,4 +90,4 @@ class ObjParser {
 [[noreturn]] void	ThrowError(std::string error, std::string& token, size_t line);
 [[noreturn]] void	ThrowError(std::string error, std::istringstream& ss, size_t line);
 
-#endif // PARSER_HPP
+#endif // !OBJ_PARSER_HPP

@@ -2,7 +2,6 @@
 # define ELEMENTS_HPP
 
 # include <vector>
-# include "vec2.hpp"
 # include "vec3.hpp"
 # include "vec4.hpp"
 
@@ -55,4 +54,4 @@ uint32_t	GetIndex(std::vector<T>& vector, int index)
 	return (static_cast<int>(vector.size()) < index ? 0 : index);
 }
 
-#endif // ELEMENTS_HPP
+#endif // !ELEMENTS_HPP

@@ -42,9 +42,11 @@ void	ObjParser::FillRaw(std::ifstream& ifs)
 			this->SetSmoothingGroup(ss);
 		else if (prefix == "mg")
 			this->SetMergingGroup(ss);
+		// else if (prefix == "mtllib")
+			// this->
 		else if (prefix == "#")
 			continue;
-		else
+		else // May skip instead later
 			ThrowError("Element not recognized", prefix, this->countLines);
 		this->AddToGroups(prefix);
 	}

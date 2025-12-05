@@ -1,7 +1,7 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
 # File Created: 15.09.2014 18:57:50
 
-# mtllib Statue.mtl
+mtllib Statue.mtl
 
 #
 # object Group1

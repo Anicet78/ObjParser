@@ -14,4 +14,4 @@ inline float Q_rsqrt(float number)
 	return y * ( 1.5F - ( x2 * y * y ) );
 }
 
-#endif // FT_MATH_HPP
+#endif // !FT_MATH_HPP
