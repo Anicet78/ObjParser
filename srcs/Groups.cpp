@@ -1,6 +1,6 @@
 #include "ObjParser.hpp"
 
-void	ObjParser::NewObject(std::istringstream& ss)
+void	ObjParser::SetObject(std::istringstream& ss)
 {
 	this->currentObject->activeGroups.clear();
 
@@ -22,6 +22,58 @@ void	ObjParser::SetGroups(std::istringstream& ss)
 		this->currentObject->activeGroups.emplace_back(&this->currentObject->groups[currentGroup]);
 	if (this->currentObject->activeGroups.size() == 0)
 		this->currentObject->activeGroups.emplace_back(&this->currentObject->groups["default"]);
+}
+
+// For curves -> store this->currentSmoothingGroup > 0 in a bool
+void	ObjParser::SetSmoothingGroup(std::istringstream& ss)
+{
+	this->currentSmoothingGroup = -1;
+
+	if (ss >> this->currentSmoothingGroup && this->currentSmoothingGroup == 0)
+		this->currentSmoothingGroup = -1;
+	else if (ss.fail())
+	{
+		std::string value;
+		ss.clear();
+		ss >> value;
+		if (value == "on")
+			this->currentSmoothingGroup = 1;
+		else if (value != "off")
+			ThrowError("Invalid parameter in `s`, the group id must be a number or either \"on\" or \"off\"", value, this->countLines);
+	}
+}
+
+/* Ajouter dans les surface free-form
+*	int			mergingGroupId;
+*	float		mergingResolution;
+*/
+void	ObjParser::SetMergingGroup(std::istringstream& ss)
+{
+	this->currentMergingGroup = -1;
+	this->currentMergingResolution = 0;
+
+	if (ss >> this->currentMergingGroup && this->currentMergingGroup == 0)
+	{
+		this->currentMergingGroup = -1;
+		return ;
+	}
+	else if (ss.fail())
+	{
+		std::string value;
+		ss.clear();
+		ss >> value;
+		if (value != "off")
+			ThrowError("Invalid parameter in `mg`, the group id must be a number or \"off\"", value, this->countLines);
+		return ;
+	}
+
+	if (!(ss >> this->currentMergingResolution))
+	{
+		if (ss.eof())
+			ThrowError("Not enough argument in `mg` (group_number, res)", this->countLines);
+		else
+			ThrowError("Invalid parameter in `mg`, the resolution must be a float", ss, this->countLines);
+	}
 }
 
 void	ObjParser::AddToGroups(std::string& prefix)
@@ -53,22 +105,5 @@ void	ObjParser::AddToGroups(std::string& prefix)
 		std::visit([&smoothGroup](auto* v){
 			smoothGroup.faceIndices.emplace_back(v->size());
 		}, vec);
-	}
-}
-
-// For curves -> store this->currentSmoothingGroup > 0 in a bool
-void	ObjParser::SetSmoothingGroup(std::istringstream& ss)
-{
-	this->currentSmoothingGroup = -1;
-
-	if (ss >> this->currentSmoothingGroup && this->currentSmoothingGroup == 0)
-		this->currentSmoothingGroup = -1;
-	else if (ss.fail())
-	{
-		std::string value;
-		ss.clear();
-		ss >> value;
-		if (value == "on")
-			this->currentSmoothingGroup = 1;
 	}
 }

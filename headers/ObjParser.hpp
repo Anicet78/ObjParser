@@ -31,6 +31,12 @@ struct SmoothingGroup {
 	std::vector<uint32_t>	faceIndices;
 };
 
+struct MergingGroup {
+	int		id;
+	float	resolution;
+};
+
+
 struct Object {
 	std::unordered_map<std::string, Group>	groups;
 	std::vector<Group*>						activeGroups;
@@ -51,11 +57,14 @@ class ObjParser {
 
 		Object*	currentObject;
 		int		currentSmoothingGroup;
+		int		currentMergingGroup;
+		float	currentMergingResolution;
 
-		void	NewObject(std::istringstream& ss);
+		void	SetObject(std::istringstream& ss);
 		void	SetGroups(std::istringstream& ss);
-		void	AddToGroups(std::string& prefix);
 		void	SetSmoothingGroup(std::istringstream& ss);
+		void	SetMergingGroup(std::istringstream& ss);
+		void	AddToGroups(std::string& prefix);
 		void	FillRaw(std::ifstream& ifs);
 
 		Vertex				NewVertex(std::istringstream& ss);

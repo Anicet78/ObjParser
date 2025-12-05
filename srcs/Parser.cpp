@@ -35,11 +35,13 @@ void	ObjParser::FillRaw(std::ifstream& ifs)
 		else if (prefix == "p")
 			this->raw.points.emplace_back(NewPoint(ss));
 		else if (prefix == "o")
-			this->NewObject(ss);
+			this->SetObject(ss);
 		else if (prefix == "g")
 			this->SetGroups(ss);
 		else if (prefix == "s")
 			this->SetSmoothingGroup(ss);
+		else if (prefix == "mg")
+			this->SetMergingGroup(ss);
 		else if (prefix == "#")
 			continue;
 		else
