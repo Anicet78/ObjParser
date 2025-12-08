@@ -82,8 +82,10 @@ Face	ObjParser::NewFace(std::istringstream& ss)
 	std::string	currentFace;
 	while (ss >> currentFace)
 	{
+		std::string part;
+		std::stringstream tokenSS(currentFace);
 		uint32_t v_index, vt_index = 0, vn_index = 0;
-		if (std::getline(ss, currentFace, '/'))
+		if (std::getline(tokenSS, currentFace, '/'))
 		{
 			if (currentFace.empty())
 				ThrowError("No vertex index defined in `f`", this->countLines, this->fileName);
@@ -94,7 +96,7 @@ Face	ObjParser::NewFace(std::istringstream& ss)
 			if (v_index == 0)
 				ThrowError("Vertex index " + currentFace + " not found in the vertices list in `f`, the vertices used must be declared before the face declaration", this->countLines, this->fileName);
 		}
-		if (std::getline(ss, currentFace, '/') && !currentFace.empty())
+		if (std::getline(tokenSS, currentFace, '/') && !currentFace.empty())
 		{
 			int vt = StrToInt(currentFace, "f", this->countLines, this->fileName);
 			if (vt == 0)
@@ -103,7 +105,7 @@ Face	ObjParser::NewFace(std::istringstream& ss)
 			if (vt_index == 0)
 				ThrowError("Texture index " + currentFace + " not found in the uvs list in `f`, the uvs used must be declared before the face declaration", this->countLines, this->fileName);
 		}
-		if (std::getline(ss, currentFace, '/') && !currentFace.empty())
+		if (std::getline(tokenSS, currentFace, '/') && !currentFace.empty())
 		{
 			int vn = StrToInt(currentFace, "f", this->countLines, this->fileName);
 			if (vn == 0)
