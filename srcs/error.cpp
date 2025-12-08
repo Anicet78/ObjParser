@@ -1,5 +1,37 @@
 #include "ObjParser.hpp"
 
+float	StrToFloat(const std::string& str, std::string statement, size_t countLine, std::string& fileName)
+{
+	float f;
+
+	try {
+		f = std::stof(str);
+	}
+	catch (const std::invalid_argument& e) {
+		ThrowError("Invalid argument in `" + statement + "`, '" + str + "' is not a float", countLine, fileName);
+	}
+	catch (const std::out_of_range& e) {
+		ThrowError("Invalid argument in `" + statement + "`, '" + str + "' is out of range", countLine, fileName);
+	}
+	return (f);
+}
+
+int	StrToInt(const std::string& str, std::string statement, size_t countLine, std::string& fileName)
+{
+	int i;
+
+	try {
+		i = std::stoi(str);
+	}
+	catch (const std::invalid_argument& e) {
+		ThrowError("Invalid argument in `" + statement + "`, '" + str + "' is not an integer", countLine, fileName);
+	}
+	catch (const std::out_of_range& e) {
+		ThrowError("Invalid argument in `" + statement + "`, '" + str + "' is out of range", countLine, fileName);
+	}
+	return (i);
+}
+
 [[noreturn]] void	ThrowError(std::string error)
 {
 	throw std::runtime_error("An error as occured: " + error);

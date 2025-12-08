@@ -5,24 +5,6 @@ MtlParser::MtlParser(void)
 	this->countLines = 0;
 }
 
-void	MtlParser::NewMaterial(std::istringstream& ss)
-{
-	std::string materialName = "";
-	std::string namePart;
-	while (ss >> namePart)
-	{
-		materialName += namePart;
-		materialName += " ";
-	}
-
-	if (materialName == "")
-		ThrowError("You must provide a name for the material in `newmtl`", this->countLines, this->fileName);
-	materialName.erase(materialName.back());
-
-	this->materials[namePart];
-	this->currentMaterial = materialName;
-}
-
 void	MtlParser::ParseFile(std::ifstream& ifs)
 {
 	std::string	line;
@@ -37,6 +19,16 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 
 		if (prefix == "newmtl")
 			this->NewMaterial(ss);
+		else if (prefix == "Ka")
+			this->ParseColor(ss, prefix, this->materials[this->currentMaterial].ambient);
+		else if (prefix == "Kd")
+			this->ParseColor(ss, prefix, this->materials[this->currentMaterial].diffuse);
+		else if (prefix == "Ks")
+			this->ParseColor(ss, prefix, this->materials[this->currentMaterial].specular);
+		else if (prefix == "Tf")
+			this->ParseColor(ss, prefix, this->materials[this->currentMaterial].transmissionFilter);
+		else if (prefix == "illum")
+			this->SetIllumModel(ss);
 		else if (prefix == "#")
 			continue;
 		else // May skip instead later

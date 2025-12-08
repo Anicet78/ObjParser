@@ -87,7 +87,7 @@ Face	ObjParser::NewFace(std::istringstream& ss)
 		{
 			if (currentFace.empty())
 				ThrowError("No vertex index defined in `f`", this->countLines, this->fileName);
-			int v = std::stoi(currentFace);
+			int v = StrToInt(currentFace, "f", this->countLines, this->fileName);
 			if (v == 0)
 				ThrowError("Vertex index must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, this->countLines, this->fileName);
 			v_index = GetIndex(this->raw.vertices, v);
@@ -96,7 +96,7 @@ Face	ObjParser::NewFace(std::istringstream& ss)
 		}
 		if (std::getline(ss, currentFace, '/') && !currentFace.empty())
 		{
-			int vt = std::stoi(currentFace);
+			int vt = StrToInt(currentFace, "f", this->countLines, this->fileName);
 			if (vt == 0)
 				ThrowError("Texture index must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, this->countLines, this->fileName);
 			vt_index = GetIndex(this->raw.uvs, vt);
@@ -105,7 +105,7 @@ Face	ObjParser::NewFace(std::istringstream& ss)
 		}
 		if (std::getline(ss, currentFace, '/') && !currentFace.empty())
 		{
-			int vn = std::stoi(currentFace);
+			int vn = StrToInt(currentFace, "f", this->countLines, this->fileName);
 			if (vn == 0)
 				ThrowError("Normal index must be referenced by its relative position (1-based) and thus cannot be '0' in `f`", currentFace, this->countLines, this->fileName);
 			vn_index = GetIndex(this->raw.normals, vn);
@@ -132,7 +132,7 @@ Line	ObjParser::NewLine(std::istringstream& ss)
 		{
 			if (currentLine.empty())
 				ThrowError("No vertex index defined in `l`", this->countLines, this->fileName);
-			int v = std::stoi(currentLine);
+			int v = StrToInt(currentLine, "l", this->countLines, this->fileName);
 			if (v == 0)
 				ThrowError("Vertex index must be referenced by its relative position (1-based) and thus cannot be '0' in `l`", currentLine, this->countLines, this->fileName);
 			v_index = GetIndex(this->raw.vertices, v);
@@ -141,7 +141,7 @@ Line	ObjParser::NewLine(std::istringstream& ss)
 		}
 		if (std::getline(ss, currentLine, '/') && !currentLine.empty())
 		{
-			int vt = std::stoi(currentLine);
+			int vt = StrToInt(currentLine, "l", this->countLines, this->fileName);
 			if (vt == 0)
 				ThrowError("Texture index must be referenced by its relative position (1-based) and thus cannot be '0' in `l`", currentLine, this->countLines, this->fileName);
 			vt_index = GetIndex(this->raw.uvs, vt);
@@ -162,7 +162,7 @@ Point	ObjParser::NewPoint(std::istringstream& ss)
 	while (ss >> currentPoint)
 	{
 		uint32_t v_index;
-		int v = std::stoi(currentPoint);
+		int v = StrToInt(currentPoint, "p", this->countLines, this->fileName);
 		if (v == 0)
 			ThrowError("Vertex index must be referenced by its relative position (1-based) and thus cannot be '0' in `p`", currentPoint, this->countLines, this->fileName);
 		v_index = GetIndex(this->raw.vertices, v);
