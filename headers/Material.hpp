@@ -22,7 +22,7 @@ typedef ParsedColor Diffuse;
 typedef ParsedColor Specular;
 typedef ParsedColor TransmissionFilter;
 
-struct Disolve {
+struct Dissolve {
 	float	factor;
 	bool	halo;
 };
@@ -38,7 +38,7 @@ struct Material {
 	Specular			specular;			// Ks
 	TransmissionFilter	transmissionFilter;	// Tf
 	int					illuminationModel;	// illum
-	Disolve				disolve;			// d
+	Dissolve			dissolve;			// d
 	int					shininess;			// Ns
 	int					sharpness;			// sharpness
 	float				refractiveIndex;	// Ni
@@ -53,6 +53,9 @@ struct Material {
 	std::string	mapBump;		// bump
 
 	std::string	mapRefl;		// refl
+
+	static Material	BlackMaterial(void);
+	static Material	WhiteMaterial(void);
 
 };
 

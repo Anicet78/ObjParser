@@ -10,7 +10,7 @@ void	ObjParser::SetObject(std::istringstream& ss)
 	this->currentObject = &this->objects[currentObjectStr];
 	this->currentObject->activeGroups.emplace_back(&this->currentObject->groups[currentObjectStr]);
 	if (ss >> std::ws; ss.peek() != EOF)
-		ThrowError("Too many arguments in `o`, you can only create one object at a time", ss, this->countLines, this->fileName);
+		ThrowError("Too many arguments in `o`, only one object can be created at a time", ss, this->countLines, this->fileName);
 }
 
 void	ObjParser::SetGroups(std::istringstream& ss)

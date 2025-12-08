@@ -58,6 +58,7 @@ class ObjParser {
 		std::string	currentMaterial;
 
 		void	AddMaterialList(std::istringstream& ss);
+		void	SetMaterial(std::istringstream& ss);
 
 		Object*	currentObject;
 		int		currentSmoothingGroup;

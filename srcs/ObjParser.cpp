@@ -8,6 +8,8 @@ ObjParser::ObjParser(void)
 	this->currentSmoothingGroup = 0;
 	this->currentMergingGroup = -1;
 	this->currentMergingResolution = 0;
+
+	this->materials[""] = Material::WhiteMaterial();
 }
 
 void	ObjParser::AddMaterialList(std::istringstream& ss)
@@ -16,9 +18,21 @@ void	ObjParser::AddMaterialList(std::istringstream& ss)
 	while (ss >> mtlFileName)
 	{
 		MaterialList newMaterialList = MtlParser::ImportMtl(mtlFileName);
+		for (const auto& [newKey, newValue] : newMaterialList) {
+			this->materials[newKey] = newValue;
+		}
 	}
+
 	if (this->materials.size() == 0)
 		ThrowError("Not enough arguments in `mtllib` ('mtlFileName', [...])", this->fileName);
+}
+
+void	ObjParser::SetMaterial(std::istringstream& ss)
+{
+	if (!(ss >> this->currentMaterial))
+		this->currentMaterial = "";
+	else if (ss >> std::ws; ss.peek() != EOF)
+		ThrowError("Too many materials given in `usemtl`, only one material can be set at a time", ss, this->countLines, this-> fileName);
 }
 
 void	ObjParser::FillRaw(std::ifstream& ifs)
@@ -49,6 +63,8 @@ void	ObjParser::FillRaw(std::ifstream& ifs)
 			this->raw.points.emplace_back(NewPoint(ss));
 		else if (prefix == "mtllib")
 			this->AddMaterialList(ss);
+		else if (prefix == "usemtl")
+			this->SetMaterial(ss);
 		else if (prefix == "o")
 			this->SetObject(ss);
 		else if (prefix == "g")

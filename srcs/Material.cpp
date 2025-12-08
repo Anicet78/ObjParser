@@ -3,18 +3,42 @@
 Material::Material(void)
 {
 	this->illuminationModel = 2;
-	this->disolve.factor = 1.0f;
-	this->disolve.halo = false;
+	this->dissolve.factor = 1.0f;
+	this->dissolve.halo = false;
 	this->shininess = 0;
 	this->sharpness = 60;
 	this->refractiveIndex = 1.0f;
+}
+
+Material	Material::BlackMaterial(void)
+{
+	Material mat;
+	mat.ambient.format = ColorFormat::RGB;
+	mat.ambient.rgb = vec3(0, 0, 0);
+	mat.diffuse.format = ColorFormat::RGB;
+	mat.diffuse.rgb = vec3(0, 0, 0);
+	mat.specular.format = ColorFormat::RGB;
+	mat.specular.rgb = vec3(0, 0, 0);
+	return (mat);
+}
+
+Material	Material::WhiteMaterial(void)
+{
+	Material mat;
+	mat.ambient.format = ColorFormat::RGB;
+	mat.ambient.rgb = vec3(1, 1, 1);
+	mat.diffuse.format = ColorFormat::RGB;
+	mat.diffuse.rgb = vec3(1, 1, 1);
+	mat.specular.format = ColorFormat::RGB;
+	mat.specular.rgb = vec3(1, 1, 1);
+	return (mat);
 }
 
 void	MtlParser::NewMaterial(std::istringstream& ss)
 {
 	std::string materialName = "";
 	if (!(ss >> materialName) || materialName == "")
-		ThrowError("You must provide a name for the material in `newmtl`", this->countLines, this->fileName);
+		ThrowError("A name for the material must be provided in `newmtl`", this->countLines, this->fileName);
 
 	if (ss >> std::ws; ss.peek() != EOF)
 		ThrowError("Materials can only have one name and it cannot contains blanks in `newmtl`", ss, this->countLines, this->fileName);
@@ -89,7 +113,7 @@ void	MtlParser::SetIllumModel(std::istringstream& ss)
 
 void	MtlParser::SetDisolve(std::istringstream& ss, bool needInversion)
 {
-	Disolve& disolve = this->materials[this->currentMaterial].disolve;
+	Dissolve& dissolve = this->materials[this->currentMaterial].dissolve;
 
 	std::string value;
 	if (!(ss >> value))
@@ -97,7 +121,7 @@ void	MtlParser::SetDisolve(std::istringstream& ss, bool needInversion)
 
 	if (value == "-halo")
 	{
-		disolve.halo = true;
+		dissolve.halo = true;
 		if (!(ss >> value))
 			ThrowError("Not enough arguments in `d` ([-halo] factor)", this->countLines, this->fileName);
 	}
@@ -105,9 +129,9 @@ void	MtlParser::SetDisolve(std::istringstream& ss, bool needInversion)
 	if (ss >> std::ws; ss.peek() != EOF)
 		ThrowError("Too many arguments in `d`", ss, this->countLines, this->fileName);
 
-	disolve.factor = StrToFloat(value, "d", this->countLines, this->fileName);
+	dissolve.factor = StrToFloat(value, "d", this->countLines, this->fileName);
 	if (needInversion)
-		disolve.factor = 1 - disolve.factor;
+		dissolve.factor = 1 - dissolve.factor;
 }
 
 void	MtlParser::SetShininess(std::istringstream& ss)
