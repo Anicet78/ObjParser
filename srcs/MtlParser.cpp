@@ -29,8 +29,8 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->ParseColor(ss, prefix, this->materials[this->currentMaterial].transmissionFilter);
 		else if (prefix == "illum")
 			this->SetIllumModel(ss);
-		else if (prefix == "d")
-			this->SetDisolve(ss);
+		else if (prefix == "d" || prefix == "Tr")
+			this->SetDisolve(ss, prefix == "Tr");
 		else if (prefix == "Ns")
 			this->SetShininess(ss);
 		else if (prefix == "sharpness")

@@ -46,16 +46,18 @@ void	MtlParser::ParseColor(std::istringstream& ss, std::string statement, Parsed
 			color.format = ColorFormat::RGB;
 
 		r = StrToFloat(token, statement, this->countLines, this->fileName);
+
 		ss >> token;
 		if (!ss.eof())
 			g = StrToFloat(token, statement, this->countLines, this->fileName);
 		else
 			g = r;
 
-		if (ss.eof() && ss >> token && !ss.eof())
+		if (!ss.eof() && ss >> token && !ss.eof())
 			b = StrToFloat(token, statement, this->countLines, this->fileName);
 		else
 			b = r;
+
 		color.rgb = vec3(r, g, b);
 	}
 
@@ -79,7 +81,7 @@ void	MtlParser::SetIllumModel(std::istringstream& ss)
 		ThrowError("Invalid value in `illum`, the number should be between 0 and 10", value, this->countLines, this->fileName);
 }
 
-void	MtlParser::SetDisolve(std::istringstream& ss)
+void	MtlParser::SetDisolve(std::istringstream& ss, bool needInversion)
 {
 	Disolve& disolve = this->materials[this->currentMaterial].disolve;
 
@@ -98,6 +100,8 @@ void	MtlParser::SetDisolve(std::istringstream& ss)
 		ThrowError("Too many arguments in `d`", ss, this->countLines, this->fileName);
 
 	disolve.factor = StrToFloat(value, "d", this->countLines, this->fileName);
+	if (needInversion)
+		disolve.factor = 1 - disolve.factor;
 }
 
 void	MtlParser::SetShininess(std::istringstream& ss)
