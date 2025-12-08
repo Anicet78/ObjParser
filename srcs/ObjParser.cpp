@@ -91,4 +91,59 @@ void	ObjParser::ParseFile(std::string filename)
 	this->FillRaw(ifs);
 
 	ifs.close();
+	this->Print();
+}
+
+void	ObjParser::Print(void) const
+{
+	std::cout << "File name: " << this->fileName << std::endl;
+
+	// Vertex
+	std::cout << "Vertices:" << std::endl;
+	for (std::size_t i = 0; i < this->raw.vertices.size(); ++i) {
+		std::cout << "index: " << i << ", valeur: " << this->raw.vertices[i] << std::endl;
+	}
+
+	// UV
+	std::cout << "UVS:" << std::endl;
+	for (std::size_t i = 0; i < this->raw.uvs.size(); ++i) {
+		std::cout << "index: " << i << ", valeur: " << this->raw.uvs[i] << std::endl;
+	}
+
+	// Normal
+	std::cout << "Normals:" << std::endl;
+	for (std::size_t i = 0; i < this->raw.normals.size(); ++i) {
+		std::cout << "index: " << i << ", valeur: " << this->raw.normals[i] << std::endl;
+	}
+
+	// ParamSpaceVertices
+	std::cout << "ParamSpaceVertices:" << std::endl;
+	for (std::size_t i = 0; i < this->raw.paramSpaceVertices.size(); ++i) {
+		std::cout << "index: " << i << ", valeur: " << this->raw.paramSpaceVertices[i] << std::endl;
+	}
+
+	// Faces
+	std::cout << "Face:" << std::endl;
+	for (std::size_t i = 0; i < this->raw.faces.size(); ++i) {
+		std::cout << "index: " << i << ", valeur: " << this->raw.faces[i] << std::endl;
+	}
+
+	// Lines
+	std::cout << "Lines:" << std::endl;
+	for (std::size_t i = 0; i < this->raw.lines.size(); ++i) {
+		std::cout << "index: " << i << ", valeur: " << this->raw.lines[i] << std::endl;
+	}
+
+	// Points
+	std::cout << "Points:" << std::endl;
+	for (std::size_t i = 0; i < this->raw.points.size(); ++i) {
+		std::cout << "index: " << i << ", valeur: " << this->raw.points[i] << std::endl;
+	}
+
+	// Materials
+	std::cout << "Materials: " << std::endl;
+	for (const auto& [key, value] : this->materials) {
+		std::cout << key << ":" << std::endl;
+		value.Print();
+	}
 }

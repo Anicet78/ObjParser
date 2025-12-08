@@ -89,6 +89,7 @@ class ObjParser {
 
 		ObjParser(void);
 		void	ParseFile(std::string filename);
+		void	Print(void) const;
 
 };
 

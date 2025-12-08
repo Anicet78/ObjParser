@@ -15,6 +15,23 @@ struct ParsedColor {
 	ParsedColor(void) {
 		this->format = ColorFormat::None, this->spectralFactor = 1.0;
 	}
+
+	friend std::ostream&	operator<<(std::ostream &stream, const ParsedColor& color)
+	{
+		if (color.format == ColorFormat::Spectral)
+		{
+			std::cout << "Format: Spectral" << std::endl;
+			std::cout << "Spectral file: " << color.spectralFile << std::endl;
+			std::cout << "Spectral factor: " << color.spectralFactor << std::endl;
+			return (stream);
+		}
+		else if (color.format == ColorFormat::XYZ)
+			std::cout << "Format: XYZ" << std::endl << "xyz: ";
+		else
+			std::cout << "Format: RGB" << std::endl << "rgb: ";
+		std::cout << color.rgb << std::endl;
+		return (stream);
+	}
 };
 
 typedef ParsedColor Ambient;
@@ -39,7 +56,7 @@ struct Material {
 	TransmissionFilter	transmissionFilter;	// Tf
 	int					illuminationModel;	// illum
 	Dissolve			dissolve;			// d
-	int					shininess;			// Ns
+	float				shininess;			// Ns
 	int					sharpness;			// sharpness
 	float				refractiveIndex;	// Ni
 
@@ -56,6 +73,8 @@ struct Material {
 
 	static Material	BlackMaterial(void);
 	static Material	WhiteMaterial(void);
+
+	void	Print(void) const;
 
 };
 

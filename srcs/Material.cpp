@@ -34,6 +34,20 @@ Material	Material::WhiteMaterial(void)
 	return (mat);
 }
 
+void	Material::Print(void) const
+{
+	std::cout << "Ambient: " << std::endl << this->ambient << std::endl;
+	std::cout << "Diffuse: " << std::endl << this->diffuse << std::endl;
+	std::cout << "Specular: " << std::endl << this->specular << std::endl;
+	std::cout << "TransmissionFilter: " << std::endl << this->transmissionFilter << std::endl;
+	std::cout << "Illumination model: " << this->illuminationModel << std::endl;
+	std::cout << "Dissolve factor: " << this->dissolve.factor << std::endl;
+	std::cout << "Dissolve halo: " << this->dissolve.halo << std::endl;
+	std::cout << "Shininess: " << this->shininess << std::endl;
+	std::cout << "Sharpness: " << this->sharpness << std::endl;
+	std::cout << "Refractive index: " << this->refractiveIndex << std::endl;
+}
+
 void	MtlParser::NewMaterial(std::istringstream& ss)
 {
 	std::string materialName = "";
@@ -136,7 +150,7 @@ void	MtlParser::SetDisolve(std::istringstream& ss, bool needInversion)
 
 void	MtlParser::SetShininess(std::istringstream& ss)
 {
-	int& shininess = this->materials[this->currentMaterial].shininess;
+	float& shininess = this->materials[this->currentMaterial].shininess;
 
 	std::string value;
 	if (!(ss >> value))
@@ -145,7 +159,7 @@ void	MtlParser::SetShininess(std::istringstream& ss)
 	if (ss >> std::ws; ss.peek() != EOF)
 		ThrowError("Too many arguments in `Ns`", ss, this->countLines, this->fileName);
 
-	shininess = StrToInt(value, "Ns", this->countLines, this->fileName);
+	shininess = StrToFloat(value, "Ns", this->countLines, this->fileName);
 }
 
 void	MtlParser::SetSharpness(std::istringstream& ss)
