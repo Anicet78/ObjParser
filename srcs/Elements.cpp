@@ -13,7 +13,7 @@ Vertex	ObjParser::NewVertex(std::istringstream& ss)
 	if (!(ss >> w) && !ss.eof())
 		ThrowError("Invalid scale argument in `v`", ss, this->countLines, this->fileName);
 	if (ss >> std::ws; ss.peek() != EOF)
-		ThrowError("Too many arguments in `v`", this->countLines, this->fileName);
+		ThrowError("Too many arguments in `v`", ss, this->countLines, this->fileName);
 	return (Vertex(x, y, z, w));
 }
 
@@ -32,7 +32,7 @@ UV	ObjParser::NewUV(std::istringstream& ss)
 	if (!ss.eof() && !(ss >> w) && !ss.eof())
 		ThrowError("Invalid coordinate argument in `vt`", ss, this->countLines, this->fileName);
 	if (ss >> std::ws; ss.peek() != EOF)
-		ThrowError("Too many arguments in `vt`", this->countLines, this->fileName);
+		ThrowError("Too many arguments in `vt`", ss, this->countLines, this->fileName);
 	if (u < 0 || u > 1)
 		ThrowError("Invalid u coordinate in `vt`, every coordinates should be in [0,1]", this->countLines, this->fileName);
 	if (v < 0 || v > 1)
@@ -53,7 +53,7 @@ Normal	ObjParser::NewNormal(std::istringstream& ss)
 			ThrowError("Invalid normal argument in `vn`", ss, this->countLines, this->fileName);
 	}
 	if (ss >> std::ws; ss.peek() != EOF)
-		ThrowError("Too many arguments in `vt`", this->countLines, this->fileName);
+		ThrowError("Too many arguments in `vt`", ss, this->countLines, this->fileName);
 	return (Normal(x, y, z).normalize());
 }
 
@@ -72,7 +72,7 @@ ParamSpaceVertex	ObjParser::NewParamSpaceVertex(std::istringstream& ss)
 	if (!ss.eof() && !(ss >> w) && !ss.eof())
 		ThrowError("Invalid point argument in `vp`", ss, this->countLines, this->fileName);
 	if (ss >> std::ws; ss.peek() != EOF)
-		ThrowError("Too many arguments in `vp`", this->countLines, this->fileName);
+		ThrowError("Too many arguments in `vp`", ss, this->countLines, this->fileName);
 	return (ParamSpaceVertex(u, v, w));
 }
 
