@@ -2,6 +2,12 @@
 
 Material::Material(void)
 {
+	this->illuminationModel = 2;
+	this->disolve.factor = 1.0f;
+	this->disolve.halo = false;
+	this->shininess = 0;
+	this->sharpness = 60;
+	this->refractiveIndex = 1.0f;
 }
 
 void	MtlParser::NewMaterial(std::istringstream& ss)
