@@ -129,8 +129,10 @@ Line	ObjParser::NewLine(std::istringstream& ss)
 	std::string	currentLine;
 	while (ss >> currentLine)
 	{
+		std::string part;
+		std::stringstream tokenSS(currentLine);
 		uint32_t v_index, vt_index = 0;
-		if (std::getline(ss, currentLine, '/'))
+		if (std::getline(tokenSS, currentLine, '/'))
 		{
 			if (currentLine.empty())
 				ThrowError("No vertex index defined in `l`", this->countLines, this->fileName);
@@ -141,7 +143,7 @@ Line	ObjParser::NewLine(std::istringstream& ss)
 			if (v_index == 0)
 				ThrowError("Vertex index " + currentLine + " not found in the vertices list in `l`, the vertices used must be declared before the line declaration", this->countLines, this->fileName);
 		}
-		if (std::getline(ss, currentLine, '/') && !currentLine.empty())
+		if (std::getline(tokenSS, currentLine, '/') && !currentLine.empty())
 		{
 			int vt = StrToInt(currentLine, "l", this->countLines, this->fileName);
 			if (vt == 0)
