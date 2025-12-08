@@ -29,6 +29,14 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->ParseColor(ss, prefix, this->materials[this->currentMaterial].transmissionFilter);
 		else if (prefix == "illum")
 			this->SetIllumModel(ss);
+		else if (prefix == "d")
+			this->SetDisolve(ss);
+		else if (prefix == "Ns")
+			this->SetShininess(ss);
+		else if (prefix == "sharpness")
+			this->SetSharpness(ss);
+		else if (prefix == "Ni")
+			this->SetRefractiveIndex(ss);
 		else if (prefix == "#")
 			continue;
 		else // May skip instead later

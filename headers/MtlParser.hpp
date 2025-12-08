@@ -21,6 +21,10 @@ class MtlParser {
 		void	NewMaterial(std::istringstream& ss);
 		void	ParseColor(std::istringstream& ss, std::string statement, ParsedColor& color);
 		void	SetIllumModel(std::istringstream& ss);
+		void	SetDisolve(std::istringstream& ss);
+		void	SetShininess(std::istringstream& ss);
+		void	SetSharpness(std::istringstream& ss);
+		void	SetRefractiveIndex(std::istringstream& ss);
 
 		void	ParseFile(std::ifstream& ifs);
 
