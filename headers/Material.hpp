@@ -3,6 +3,7 @@
 
 # include "vec3.hpp"
 # include "vec4.hpp"
+# include <vector>
 
 enum class ColorFormat { RGB, XYZ, Spectral, None };
 
@@ -63,6 +64,13 @@ struct TextureMap {
 	ImageChan	imfchan = ImageChan::L;
 };
 
+enum class ReflectionMapType { None, Sphere, CubeTop, CubeBottom, CubeFront, CubeBack, CubeLeft, CubeRight };
+
+struct ReflectionMap: public TextureMap {
+	ReflectionMapType	type = ReflectionMapType::None;
+};
+
+
 struct Material {
 
 	Material(void);
@@ -89,7 +97,7 @@ struct Material {
 	TextureMap	mapBump;		// bump
 	bool		mapAAT;			// map_aat
 
-	TextureMap	mapRefl;		// refl
+	std::vector<ReflectionMap> reflectionMaps;
 
 	static Material	BlackMaterial(void);
 	static Material	WhiteMaterial(void);

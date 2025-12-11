@@ -2,7 +2,7 @@
 
 bool	MtlParser::ParseOnOff(std::istringstream& ss, std::string& option, std::string& statement)
 {
-	if (option == "cc" && statement != "map_Ka" && statement != "map_Kd" && statement != "map_Ks")
+	if (option == "cc" && statement != "map_Ka" && statement != "map_Kd" && statement != "map_Ks" && statement != "refl")
 		ThrowError("This option isn't available in `" + statement + "`", option, this->countLines, this->fileName);
 
 	std::string value;
@@ -37,7 +37,7 @@ void	MtlParser::SetBoost(std::istringstream& ss, TextureMap& map, std::string& o
 
 void	MtlParser::SetImageChan(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement)
 {
-	if (statement == "map_Ka" || statement == "map_Kd" || statement == "map_Ks")
+	if (statement == "map_Ka" || statement == "map_Kd" || statement == "map_Ks" || statement == "refl")
 		ThrowError("This option isn't available in `" + statement + "`", option, this->countLines, this->fileName);
 
 	std::string value;

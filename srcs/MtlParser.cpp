@@ -169,7 +169,7 @@ void	MtlParser::SetMap(std::istringstream& ss, TextureMap& map, std::string& sta
 	}
 
 	if (map.filename == "")
-		ThrowError("Map file name must be defined in `" + statement + "`", this->countLines, this->fileName);
+		ThrowError("Missing argument in `" + statement + "`, map file name must be defined ([-options], filename)", this->countLines, this->fileName);
 
 	if (ss >> std::ws; ss.peek() != EOF)
 		ThrowError("Only one file name can be defined in `" + statement + "`", currentArg, this->countLines, this->fileName);
@@ -186,6 +186,41 @@ void	MtlParser::SetMapAAT(std::istringstream& ss)
 		this->materials[this->currentMaterial].mapAAT = false;
 	else
 		ThrowError("Invalid argument in `map_aat` (on | off)", this->countLines, this->fileName);
+}
+
+ReflectionMap	MtlParser::NewReflMap(std::istringstream& ss, std::string& statement)
+{
+	ReflectionMap	map;
+
+	std::string value;
+	if (!(ss >> value))
+		ThrowError("Missing argument in `refl` (-type cube_side | sphere, [-options], filename)", this->countLines, this->fileName);
+
+	if (value != "-type")
+		ThrowError("Invalid argument in `refl`, second argument should be -type (-type cube_side | sphere, [-options], filename)", value, this->countLines, this->fileName);
+
+	if (!(ss >> value))
+		ThrowError("Missing argument in `refl` (-type cube_side | sphere, [-options], filename)", this->countLines, this->fileName);
+
+	if (value == "sphere")
+		map.type = ReflectionMapType::Sphere;
+	else if (value == "cube_top")
+		map.type = ReflectionMapType::CubeTop;
+	else if (value == "cube_bottom")
+		map.type = ReflectionMapType::CubeBottom;
+	else if (value == "cube_front")
+		map.type = ReflectionMapType::CubeFront;
+	else if (value == "cube_back")
+		map.type = ReflectionMapType::CubeBack;
+	else if (value == "cube_left")
+		map.type = ReflectionMapType::CubeLeft;
+	else if (value == "cube_right")
+		map.type = ReflectionMapType::CubeRight;
+	else
+		ThrowError("Invalid reflection map type argument in `refl` (-type cube_side | sphere, [-options], filename)", this->countLines, this->fileName);
+
+	this->SetMap(ss, map, statement);
+	return (map);
 }
 
 void	MtlParser::ParseFile(std::ifstream& ifs)
@@ -238,6 +273,8 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetMap(ss, this->materials[this->currentMaterial].mapBump, prefix);
 		else if (prefix == "map_aat")
 			this->SetMapAAT(ss);
+		else if (prefix == "refl")
+			this->materials[currentMaterial].reflectionMaps.emplace_back(this->NewReflMap(ss, prefix));
 		else if (prefix == "#")
 			continue;
 		else // May skip instead later

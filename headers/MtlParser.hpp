@@ -37,6 +37,8 @@ class MtlParser {
 		void	SetMap(std::istringstream& ss, TextureMap& map, std::string& statement);
 		void	SetMapAAT(std::istringstream& ss);
 
+		ReflectionMap	NewReflMap(std::istringstream& ss, std::string& statement);
+
 		void	ParseFile(std::ifstream& ifs);
 
 	public:

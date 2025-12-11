@@ -7,12 +7,13 @@ OBJ_DIR		= ./objs/
 
 CXXFLAGS += -I$(HEADERS)
 
-SRCS		=	main.cpp		\
-				ObjParser.cpp	\
-				MtlParser.cpp	\
-				Elements.cpp	\
-				Groups.cpp		\
-				Material.cpp	\
+SRCS		=	main.cpp			\
+				ObjParser.cpp		\
+				MtlParser.cpp		\
+				Elements.cpp		\
+				Groups.cpp			\
+				Material.cpp		\
+				MtlMapOptions.cpp	\
 				error.cpp
 
 OBJS		= $(patsubst %.cpp, $(OBJ_DIR)%.o, $(SRCS))
