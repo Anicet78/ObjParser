@@ -61,7 +61,6 @@ struct TextureMap {
 	float		bumpMultiplier = 1.0f;
 	float		boost = 0.0f;
 	ImageChan	imfchan = ImageChan::L;
-
 };
 
 struct Material {
@@ -85,12 +84,11 @@ struct Material {
 	TextureMap	mapSpecular;	// map_Ks
 	TextureMap	mapShininess;	// map_Ns
 	TextureMap	mapDissolve;	// map_d
-
-	// map_aat
-
 	TextureMap	mapDecal;		// decal
 	TextureMap	mapDisp;		// disp
 	TextureMap	mapBump;		// bump
+
+	// map_aat
 
 	TextureMap	mapRefl;		// refl
 

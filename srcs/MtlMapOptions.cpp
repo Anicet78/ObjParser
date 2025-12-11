@@ -2,22 +2,28 @@
 
 bool	MtlParser::ParseOnOff(std::istringstream& ss, std::string& option, std::string& statement)
 {
+	if (option == "cc" && statement != "map_Ka" && statement != "map_Kd" && statement != "map_Ks")
+		ThrowError("This option isn't available in `" + statement + "`", option, this->countLines, this->fileName);
+
 	std::string value;
 	if (!(ss >> value))
-		ThrowError("Missing argument for option in `" + statement + "` (on | off)", option, this->countLines, this->fileName);
+		ThrowError("Missing argument for option '" + option + "' in `" + statement + "` (on | off)", this->countLines, this->fileName);
 	if (value == "on")
 		return (true);
 	else if (value == "off")
 		return (false);
 	else
-		ThrowError("Invalid argument in `" + statement + "` (on | off)", option, this->countLines, this->fileName);
+		ThrowError("Invalid argument for option '" + option + "' in `" + statement + "` (on | off)", this->countLines, this->fileName);
 }
 
 void	MtlParser::SetBumpMultiplier(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement)
 {
+	if (statement != "bump")
+		ThrowError("This option isn't available in `" + statement + "`", option, this->countLines, this->fileName);
+
 	std::string value;
 	if (!(ss >> value))
-		ThrowError("Missing argument for option in `" + statement + "` (mult)", option, this->countLines, this->fileName);
+		ThrowError("Missing argument for option '" + option + "' in `" + statement + "` (mult)", this->countLines, this->fileName);
 	map.resolution = StrToFloat(value, statement, this->countLines, this->fileName);
 }
 
@@ -25,15 +31,18 @@ void	MtlParser::SetBoost(std::istringstream& ss, TextureMap& map, std::string& o
 {
 	std::string value;
 	if (!(ss >> value))
-		ThrowError("Missing argument for option in `" + statement + "` (value)", option, this->countLines, this->fileName);
+		ThrowError("Missing argument for option '" + option + "' in `" + statement + "` (value)", this->countLines, this->fileName);
 	map.boost = StrToFloat(value, statement, this->countLines, this->fileName);
 }
 
 void	MtlParser::SetImageChan(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement)
 {
+	if (statement == "map_Ka" || statement == "map_Kd" || statement == "map_Ks")
+		ThrowError("This option isn't available in `" + statement + "`", option, this->countLines, this->fileName);
+
 	std::string value;
 	if (!(ss >> value))
-		ThrowError("Missing argument for option in `" + statement + "` (r | g | b | m | l | z)", option, this->countLines, this->fileName);
+		ThrowError("Missing argument for option '" + option + "' in `" + statement + "` (r | g | b | m | l | z)", this->countLines, this->fileName);
 	else if (value == "r")
 		map.imfchan = ImageChan::R;
 	else if (value == "g")
@@ -47,17 +56,17 @@ void	MtlParser::SetImageChan(std::istringstream& ss, TextureMap& map, std::strin
 	else if (value == "z")
 		map.imfchan = ImageChan::Z;
 	else
-		ThrowError("Invalid argument in `" + statement + "` (r | g | b | m | l | z)", option, this->countLines, this->fileName);
+		ThrowError("Invalid argument for option '" + option + "' in `" + statement + "` (r | g | b | m | l | z)", this->countLines, this->fileName);
 }
 
 void	MtlParser::SetMapModifiers(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement)
 {
 	std::string value;
 	if (!(ss >> value))
-		ThrowError("Missing argument for option in `" + statement + "` (base, gain)", option, this->countLines, this->fileName);
+		ThrowError("Missing argument for option '" + option + "' in `" + statement + "` (base, gain)", this->countLines, this->fileName);
 	map.base = StrToFloat(value, statement, this->countLines, this->fileName);
 	if (!(ss >> value))
-		ThrowError("Missing argument for option in `" + statement + "` (base, gain)", option, this->countLines, this->fileName);
+		ThrowError("Missing argument for option '" + option + "' in `" + statement + "` (base, gain)", this->countLines, this->fileName);
 	map.gain = StrToFloat(value, statement, this->countLines, this->fileName);
 }
 
@@ -65,7 +74,7 @@ void	MtlParser::ParseOST(std::istringstream& ss, vec3& vec, std::string& option,
 {
 	std::string value;
 	if (!(ss >> value))
-		ThrowError("Missing argument for option in `" + statement + "` (u, [v, w])", option, this->countLines, this->fileName);
+		ThrowError("Missing argument for option '" + option + "' in `" + statement + "` (u, [v, w])", this->countLines, this->fileName);
 	vec.x = StrToFloat(value, statement, this->countLines, this->fileName);
 	if (!ss.eof() && ss >> value)
 		vec.y = StrToFloat(value, statement, this->countLines, this->fileName);
@@ -77,7 +86,7 @@ void	MtlParser::SetResolution(std::istringstream& ss, TextureMap& map, std::stri
 {
 	std::string value;
 	if (!(ss >> value))
-		ThrowError("Missing argument for option in `" + statement + "` (resolution)", option, this->countLines, this->fileName);
+		ThrowError("Missing argument for option '" + option + "' in `" + statement + "` (resolution)", this->countLines, this->fileName);
 	map.resolution = StrToInt(value, statement, this->countLines, this->fileName);
 }
 
@@ -89,6 +98,8 @@ void	MtlParser::ParseMapOptions(std::string& option, std::istringstream& ss, Tex
 		map.blendv = this->ParseOnOff(ss, option, statement);
 	else if (option == "-bm")
 		this->SetBumpMultiplier(ss, map, option, statement);
+	else if (option == "-boost")
+		this->SetBoost(ss, map, option, statement);
 	else if (option == "-cc")
 		map.cc = this->ParseOnOff(ss, option, statement);
 	else if (option == "-clamp")
