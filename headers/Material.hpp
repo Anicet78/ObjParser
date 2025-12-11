@@ -44,6 +44,8 @@ struct Dissolve {
 	bool	halo;
 };
 
+enum class ImageChan { R, G, B, M, L, Z };
+
 struct TextureMap {
 	std::string	filename;
 	bool		blendu = true;
@@ -56,6 +58,10 @@ struct TextureMap {
 	vec3		scale = vec3(1, 1, 1);
 	vec3		turbulence = vec3(0, 0, 0);
 	float		resolution = 0;
+	float		bumpMultiplier = 1.0f;
+	float		boost = 0.0f;
+	ImageChan	imfchan = ImageChan::L;
+
 };
 
 struct Material {

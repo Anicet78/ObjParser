@@ -200,12 +200,15 @@ void	MtlParser::SetRefractiveIndex(std::istringstream& ss)
 
 void	MtlParser::SetAmbiantMap(std::istringstream& ss)
 {
-	TextureMap& map_ambiant = this->materials[this->currentMaterial].mapAmbient;
+	TextureMap& map = this->materials[this->currentMaterial].mapAmbient;
+
+	if (statement == "decal")
+		map.imfchan = ImageChan::M;
 
 	std::string currentArg;
 	while (ss >> currentArg)
 	{
 		if (currentArg[0] == '-')
-			ParseMapOptions(currentArg, ss, map_ambiant, statement);
+			ParseMapOptions(currentArg, ss, map, statement);
 	}
 }

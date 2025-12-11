@@ -27,6 +27,9 @@ class MtlParser {
 		void	SetRefractiveIndex(std::istringstream& ss);
 
 		bool	ParseOnOff(std::istringstream& ss, std::string& option, std::string& statement);
+		void	SetBumpMultiplier(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement);
+		void	SetImageChan(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement);
+		void	SetBoost(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement);
 		void	SetMapModifiers(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement);
 		void	ParseOST(std::istringstream& ss, vec3& vec, std::string& option, std::string& statement);
 		void	SetResolution(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement);

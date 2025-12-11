@@ -50,7 +50,7 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 		else if (prefix == "#")
 			continue;
 		else // May skip instead later
-			ThrowError("Element not recognized", prefix, this->countLines, this->fileName);
+			ThrowError("Statement not recognized", prefix, this->countLines, this->fileName);
 	}
 }
 
