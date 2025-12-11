@@ -19,6 +19,8 @@ Material	Material::BlackMaterial(void)
 	mat.diffuse.rgb = vec3(0, 0, 0);
 	mat.specular.format = ColorFormat::RGB;
 	mat.specular.rgb = vec3(0, 0, 0);
+	mat.transmissionFilter.format = ColorFormat::RGB;
+	mat.transmissionFilter.rgb = vec3(0, 0, 0);
 	return (mat);
 }
 
@@ -31,6 +33,8 @@ Material	Material::WhiteMaterial(void)
 	mat.diffuse.rgb = vec3(1, 1, 1);
 	mat.specular.format = ColorFormat::RGB;
 	mat.specular.rgb = vec3(1, 1, 1);
+	mat.transmissionFilter.format = ColorFormat::RGB;
+	mat.transmissionFilter.rgb = vec3(1, 1, 1);
 	return (mat);
 }
 
@@ -125,7 +129,7 @@ void	MtlParser::SetIllumModel(std::istringstream& ss)
 		ThrowError("Invalid value in `illum`, the number should be between 0 and 10", value, this->countLines, this->fileName);
 }
 
-void	MtlParser::SetDisolve(std::istringstream& ss, bool needInversion)
+void	MtlParser::SetDissolve(std::istringstream& ss, bool needInversion)
 {
 	Dissolve& dissolve = this->materials[this->currentMaterial].dissolve;
 
@@ -192,4 +196,16 @@ void	MtlParser::SetRefractiveIndex(std::istringstream& ss)
 	refractiveIndex = StrToFloat(value, "Ni", this->countLines, this->fileName);
 	if (refractiveIndex < 0.001f || refractiveIndex > 10.0f)
 		ThrowError("Invalid value in `Ni`, the value should be between 0.001 and 10.0", value, this->countLines, this->fileName);
+}
+
+void	MtlParser::SetAmbiantMap(std::istringstream& ss)
+{
+	TextureMap& map_ambiant = this->materials[this->currentMaterial].mapAmbient;
+
+	std::string currentArg;
+	while (ss >> currentArg)
+	{
+		if (currentArg[0] == '-')
+			ParseMapOptions(currentArg, ss, map_ambiant, statement);
+	}
 }

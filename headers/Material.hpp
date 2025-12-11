@@ -44,6 +44,20 @@ struct Dissolve {
 	bool	halo;
 };
 
+struct TextureMap {
+	std::string	filename;
+	bool		blendu = true;
+	bool		blendv = true;
+	bool		cc = false;
+	bool		clamp = false;
+	float		base = 0.0f;
+	float		gain = 1.0f;
+	vec3		offset = vec3(0, 0, 0);
+	vec3		scale = vec3(1, 1, 1);
+	vec3		turbulence = vec3(0, 0, 0);
+	float		resolution = 0;
+};
+
 struct Material {
 
 	Material(void);
@@ -60,16 +74,19 @@ struct Material {
 	int					sharpness;			// sharpness
 	float				refractiveIndex;	// Ni
 
-	std::string	mapAmbient;		// map_Ka
-	std::string	mapDiffuse;		// map_Kd
-	std::string	mapSpecular;	// map_Ks
-	std::string	mapShininess;	// map_Ns
-	std::string	mapOpacity;		// map_d
-	std::string	mapDisp;		// disp
-	std::string	mapDecal;		// decal
-	std::string	mapBump;		// bump
+	TextureMap	mapAmbient;		// map_Ka
+	TextureMap	mapDiffuse;		// map_Kd
+	TextureMap	mapSpecular;	// map_Ks
+	TextureMap	mapShininess;	// map_Ns
+	TextureMap	mapDissolve;	// map_d
 
-	std::string	mapRefl;		// refl
+	// map_aat
+
+	TextureMap	mapDecal;		// decal
+	TextureMap	mapDisp;		// disp
+	TextureMap	mapBump;		// bump
+
+	TextureMap	mapRefl;		// refl
 
 	static Material	BlackMaterial(void);
 	static Material	WhiteMaterial(void);

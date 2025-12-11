@@ -30,13 +30,23 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 		else if (prefix == "illum")
 			this->SetIllumModel(ss);
 		else if (prefix == "d" || prefix == "Tr")
-			this->SetDisolve(ss, prefix == "Tr");
+			this->SetDissolve(ss, prefix == "Tr");
 		else if (prefix == "Ns")
 			this->SetShininess(ss);
 		else if (prefix == "sharpness")
 			this->SetSharpness(ss);
 		else if (prefix == "Ni")
 			this->SetRefractiveIndex(ss);
+		else if (prefix == "map_Ka")
+			this->SetAmbiantMap(ss);
+		else if (prefix == "map_Kd")
+			this->SetDiffuseMap(ss);
+		else if (prefix == "map_Ks")
+			this->SetSpecularMap(ss);
+		else if (prefix == "map_Ns")
+			this->SetShininessMap(ss);
+		else if (prefix == "map_d")
+			this->SetDissolveMap(ss);
 		else if (prefix == "#")
 			continue;
 		else // May skip instead later
