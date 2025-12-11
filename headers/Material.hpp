@@ -87,8 +87,7 @@ struct Material {
 	TextureMap	mapDecal;		// decal
 	TextureMap	mapDisp;		// disp
 	TextureMap	mapBump;		// bump
-
-	// map_aat
+	bool		mapAAT;			// map_aat
 
 	TextureMap	mapRefl;		// refl
 

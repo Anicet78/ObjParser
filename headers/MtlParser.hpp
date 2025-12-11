@@ -34,7 +34,8 @@ class MtlParser {
 		void	ParseOST(std::istringstream& ss, vec3& vec, std::string& option, std::string& statement);
 		void	SetResolution(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement);
 		void	ParseMapOptions(std::string& option, std::istringstream& ss, TextureMap& map, std::string& statement);
-		void	SetAmbiantMap(std::istringstream& ss);
+		void	SetMap(std::istringstream& ss, TextureMap& map, std::string& statement);
+		void	SetMapAAT(std::istringstream& ss);
 
 		void	ParseFile(std::ifstream& ifs);
 
