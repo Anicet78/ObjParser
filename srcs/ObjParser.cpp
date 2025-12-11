@@ -31,6 +31,10 @@ void	ObjParser::SetMaterial(std::istringstream& ss)
 {
 	if (!(ss >> this->currentMaterial))
 		this->currentMaterial = "";
+
+	if (!this->materials.contains(this->currentMaterial))
+		ThrowError("This material doesn't exist in `usemtl`", this->currentMaterial, this->countLines, this->fileName);
+
 	else if (ss >> std::ws; ss.peek() != EOF)
 		ThrowError("Too many materials given in `usemtl`, only one material can be set at a time", ss, this->countLines, this-> fileName);
 }
