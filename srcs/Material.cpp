@@ -9,6 +9,7 @@ Material::Material(void)
 	this->sharpness = 60;
 	this->refractiveIndex = 1.0f;
 	this->roughness = 1.0f;
+	this->metallic = 0.0f;
 	this->mapAAT = false;
 }
 

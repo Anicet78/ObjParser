@@ -88,6 +88,7 @@ struct Material {
 	int					sharpness;			// sharpness
 	float				refractiveIndex;	// Ni
 	float				roughness;			// Pr
+	float				metallic;			// Pm
 
 	TextureMap	mapAmbient;		// map_Ka
 	TextureMap	mapDiffuse;		// map_Kd
@@ -98,6 +99,7 @@ struct Material {
 	TextureMap	mapDisp;		// disp
 	TextureMap	mapBump;		// bump
 	TextureMap	mapRoughness;	// map_Pr
+	TextureMap	mapMetallic;	// map_Pm
 	bool		mapAAT;			// map_aat
 
 	std::vector<ReflectionMap> reflectionMaps;

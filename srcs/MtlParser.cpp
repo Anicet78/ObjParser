@@ -165,6 +165,20 @@ void	MtlParser::SetRoughness(std::istringstream& ss)
 	roughness = StrToFloat(value, "Pr", this->countLines, this->fileName);
 }
 
+void	MtlParser::SetMetallic(std::istringstream& ss)
+{
+	float& metallic = this->materials[this->currentMaterial].metallic;
+
+	std::string value;
+	if (!(ss >> value))
+		ThrowError("Not enough arguments in `Pm` (value missing)", this->countLines, this->fileName);
+
+	if (ss >> std::ws; ss.peek() != EOF)
+		ThrowError("Too many arguments in `Pm`", ss, this->countLines, this->fileName);
+
+	metallic = StrToFloat(value, "Pm", this->countLines, this->fileName);
+}
+
 void	MtlParser::SetMap(std::istringstream& ss, TextureMap& map, std::string& statement)
 {
 	if (statement == "decal")
