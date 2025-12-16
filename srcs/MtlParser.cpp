@@ -338,7 +338,7 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 		else if (prefix == "Pcr")
 			this->SetClearcoatRoughness(ss);
 		else if (prefix == "Ke")
-			this->SetEmissive(ss);
+			this->ParseColor(ss, prefix, this->materials[this->currentMaterial].emissive);
 		else if (prefix == "map_Ka")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapAmbient, prefix);
 		else if (prefix == "map_Kd")
@@ -361,6 +361,8 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetMap(ss, this->materials[this->currentMaterial].mapMetallic, prefix);
 		else if (prefix == "map_Ps")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapSheen, prefix);
+		else if (prefix == "map_Ke")
+			this->SetMap(ss, this->materials[this->currentMaterial].mapEmissive, prefix);
 		else if (prefix == "map_aat")
 			this->SetMapAAT(ss);
 		else if (prefix == "refl")

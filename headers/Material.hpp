@@ -39,6 +39,7 @@ typedef ParsedColor Ambient;
 typedef ParsedColor Diffuse;
 typedef ParsedColor Specular;
 typedef ParsedColor TransmissionFilter;
+typedef ParsedColor Emissive;
 
 struct Dissolve {
 	float	factor;
@@ -71,7 +72,6 @@ struct ReflectionMap: public TextureMap {
 	ReflectionMapType	type = ReflectionMapType::None;
 };
 
-
 struct Material {
 
 	Material(void);
@@ -92,6 +92,7 @@ struct Material {
 	float				sheen;				// Ps
 	float				clearcoatThickness;	// Pc
 	float				clearcoatRoughness;	// Pcr
+	Emissive			emissive;			// Ke
 
 	TextureMap	mapAmbient;		// map_Ka
 	TextureMap	mapDiffuse;		// map_Kd
@@ -104,6 +105,7 @@ struct Material {
 	TextureMap	mapRoughness;	// map_Pr
 	TextureMap	mapMetallic;	// map_Pm
 	TextureMap	mapSheen;		// map_Ps
+	TextureMap	mapEmissive;	// map_Ke
 	bool		mapAAT;			// map_aat
 
 	std::vector<ReflectionMap> reflectionMaps;
