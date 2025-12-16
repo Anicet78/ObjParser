@@ -108,6 +108,7 @@ struct Material {
 	TextureMap	mapMetallic;	// map_Pm
 	TextureMap	mapSheen;		// map_Ps
 	TextureMap	mapEmissive;	// map_Ke
+	TextureMap	mapNormal;		// norm
 	bool		mapAAT;			// map_aat
 
 	std::vector<ReflectionMap> reflectionMaps;

@@ -398,6 +398,8 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetMap(ss, this->materials[this->currentMaterial].mapSheen, prefix);
 		else if (prefix == "map_Ke")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapEmissive, prefix);
+		else if (prefix == "norm")
+			this->SetMap(ss, this->materials[this->currentMaterial].mapNormal, prefix);
 		else if (prefix == "map_aat")
 			this->SetMapAAT(ss);
 		else if (prefix == "refl")
