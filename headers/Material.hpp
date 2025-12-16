@@ -62,6 +62,7 @@ struct TextureMap {
 	float		bumpMultiplier = 1.0f;
 	float		boost = 0.0f;
 	ImageChan	imfchan = ImageChan::L;
+	float		inverted = false;
 };
 
 enum class ReflectionMapType { None, Sphere, CubeTop, CubeBottom, CubeFront, CubeBack, CubeLeft, CubeRight };

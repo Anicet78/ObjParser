@@ -5,7 +5,7 @@ Material::Material(void)
 	this->illuminationModel = 2;
 	this->dissolve.factor = 1.0f;
 	this->dissolve.halo = false;
-	this->shininess = 0;
+	this->shininess = 0.0f;
 	this->sharpness = 60;
 	this->refractiveIndex = 1.0f;
 	this->mapAAT = false;

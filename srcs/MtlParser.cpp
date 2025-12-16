@@ -156,6 +156,9 @@ void	MtlParser::SetMap(std::istringstream& ss, TextureMap& map, std::string& sta
 	if (statement == "decal")
 		map.imfchan = ImageChan::M;
 
+	if (statement == "map_Tr")
+		map.inverted = true;
+
 	std::string currentArg;
 	while (ss >> currentArg)
 	{
@@ -263,7 +266,7 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetMap(ss, this->materials[this->currentMaterial].mapSpecular, prefix);
 		else if (prefix == "map_Ns")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapShininess, prefix);
-		else if (prefix == "map_d")
+		else if (prefix == "map_d" || prefix == "map_Tr")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapDissolve, prefix);
 		else if (prefix == "decal")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapDecal, prefix);
