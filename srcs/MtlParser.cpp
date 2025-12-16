@@ -288,6 +288,8 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetRefractiveIndex(ss);
 		else if (prefix == "Pr")
 			this->SetRoughness(ss);
+		else if (prefix == "Pm")
+			this->SetMetallic(ss);
 		else if (prefix == "map_Ka")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapAmbient, prefix);
 		else if (prefix == "map_Kd")
@@ -306,6 +308,8 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetMap(ss, this->materials[this->currentMaterial].mapBump, prefix);
 		else if (prefix == "map_Pr")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapRoughness, prefix);
+		else if (prefix == "map_Pm")
+			this->SetMap(ss, this->materials[this->currentMaterial].mapMetallic, prefix);
 		else if (prefix == "map_aat")
 			this->SetMapAAT(ss);
 		else if (prefix == "refl")
