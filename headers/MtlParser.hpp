@@ -25,6 +25,7 @@ class MtlParser {
 		void	SetShininess(std::istringstream& ss);
 		void	SetSharpness(std::istringstream& ss);
 		void	SetRefractiveIndex(std::istringstream& ss);
+		void	SetRoughness(std::istringstream& ss);
 
 		bool	ParseOnOff(std::istringstream& ss, std::string& option, std::string& statement);
 		void	SetBumpMultiplier(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement);

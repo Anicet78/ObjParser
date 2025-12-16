@@ -8,6 +8,7 @@ Material::Material(void)
 	this->shininess = 0.0f;
 	this->sharpness = 60;
 	this->refractiveIndex = 1.0f;
+	this->roughness = 1.0f;
 	this->mapAAT = false;
 }
 

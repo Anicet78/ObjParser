@@ -151,6 +151,20 @@ void	MtlParser::SetRefractiveIndex(std::istringstream& ss)
 		ThrowError("Invalid value in `Ni`, the value should be between 0.001 and 10.0", value, this->countLines, this->fileName);
 }
 
+void	MtlParser::SetRoughness(std::istringstream& ss)
+{
+	float& roughness = this->materials[this->currentMaterial].roughness;
+
+	std::string value;
+	if (!(ss >> value))
+		ThrowError("Not enough arguments in `Pr` (value missing)", this->countLines, this->fileName);
+
+	if (ss >> std::ws; ss.peek() != EOF)
+		ThrowError("Too many arguments in `Pr`", ss, this->countLines, this->fileName);
+
+	roughness = StrToFloat(value, "Pr", this->countLines, this->fileName);
+}
+
 void	MtlParser::SetMap(std::istringstream& ss, TextureMap& map, std::string& statement)
 {
 	if (statement == "decal")
@@ -258,6 +272,8 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetSharpness(ss);
 		else if (prefix == "Ni")
 			this->SetRefractiveIndex(ss);
+		else if (prefix == "Pr")
+			this->SetRoughness(ss);
 		else if (prefix == "map_Ka")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapAmbient, prefix);
 		else if (prefix == "map_Kd")
@@ -274,6 +290,8 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetMap(ss, this->materials[this->currentMaterial].mapDisp, prefix);
 		else if (prefix == "bump")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapBump, prefix);
+		else if (prefix == "map_Pr")
+			this->SetMap(ss, this->materials[this->currentMaterial].mapRoughness, prefix);
 		else if (prefix == "map_aat")
 			this->SetMapAAT(ss);
 		else if (prefix == "refl")
