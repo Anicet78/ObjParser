@@ -179,6 +179,20 @@ void	MtlParser::SetMetallic(std::istringstream& ss)
 	metallic = StrToFloat(value, "Pm", this->countLines, this->fileName);
 }
 
+void	MtlParser::SetSheen(std::istringstream& ss)
+{
+	float& sheen = this->materials[this->currentMaterial].sheen;
+
+	std::string value;
+	if (!(ss >> value))
+		ThrowError("Not enough arguments in `Ps` (value missing)", this->countLines, this->fileName);
+
+	if (ss >> std::ws; ss.peek() != EOF)
+		ThrowError("Too many arguments in `Ps`", ss, this->countLines, this->fileName);
+
+	sheen = StrToFloat(value, "Ps", this->countLines, this->fileName);
+}
+
 void	MtlParser::SetMap(std::istringstream& ss, TextureMap& map, std::string& statement)
 {
 	if (statement == "decal")
@@ -290,6 +304,8 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetRoughness(ss);
 		else if (prefix == "Pm")
 			this->SetMetallic(ss);
+		else if (prefix == "Ps")
+			this->SetSheen(ss);
 		else if (prefix == "map_Ka")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapAmbient, prefix);
 		else if (prefix == "map_Kd")
@@ -310,6 +326,8 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetMap(ss, this->materials[this->currentMaterial].mapRoughness, prefix);
 		else if (prefix == "map_Pm")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapMetallic, prefix);
+		else if (prefix == "map_Ps")
+			this->SetMap(ss, this->materials[this->currentMaterial].mapSheen, prefix);
 		else if (prefix == "map_aat")
 			this->SetMapAAT(ss);
 		else if (prefix == "refl")
