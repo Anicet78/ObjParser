@@ -193,6 +193,20 @@ void	MtlParser::SetSheen(std::istringstream& ss)
 	sheen = StrToFloat(value, "Ps", this->countLines, this->fileName);
 }
 
+void	MtlParser::SetClearcoat(std::istringstream& ss)
+{
+	float& clearcoat = this->materials[this->currentMaterial].clearcoat;
+
+	std::string value;
+	if (!(ss >> value))
+		ThrowError("Not enough arguments in `Pc` (value missing)", this->countLines, this->fileName);
+
+	if (ss >> std::ws; ss.peek() != EOF)
+		ThrowError("Too many arguments in `Pc`", ss, this->countLines, this->fileName);
+
+	clearcoat = StrToFloat(value, "Pc", this->countLines, this->fileName);
+}
+
 void	MtlParser::SetMap(std::istringstream& ss, TextureMap& map, std::string& statement)
 {
 	if (statement == "decal")
@@ -306,6 +320,8 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetMetallic(ss);
 		else if (prefix == "Ps")
 			this->SetSheen(ss);
+		else if (prefix == "Pc")
+			this->SetClearcoat(ss);
 		else if (prefix == "map_Ka")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapAmbient, prefix);
 		else if (prefix == "map_Kd")

@@ -90,6 +90,7 @@ struct Material {
 	float				roughness;			// Pr
 	float				metallic;			// Pm
 	float				sheen;				// Ps
+	float				clearcoat;			// Pc
 
 	TextureMap	mapAmbient;		// map_Ka
 	TextureMap	mapDiffuse;		// map_Kd

@@ -11,6 +11,7 @@ Material::Material(void)
 	this->roughness = 1.0f;
 	this->metallic = 0.0f;
 	this->sheen = 0.0f;
+	this->clearcoat = 0.0f;
 	this->mapAAT = false;
 }
 
