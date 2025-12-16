@@ -13,6 +13,8 @@ Material::Material(void)
 	this->sheen = 0.0f;
 	this->clearcoatThickness = 0.0f;
 	this->clearcoatRoughness = 0.0f;
+	this->anisotropy = 0.0f;
+	this->anisotropyRotation = 0.0f;
 	this->mapAAT = false;
 }
 

@@ -93,6 +93,8 @@ struct Material {
 	float				clearcoatThickness;	// Pc
 	float				clearcoatRoughness;	// Pcr
 	Emissive			emissive;			// Ke
+	float				anisotropy;			// aniso
+	float				anisotropyRotation;	// anisor
 
 	TextureMap	mapAmbient;		// map_Ka
 	TextureMap	mapDiffuse;		// map_Kd

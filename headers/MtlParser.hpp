@@ -30,6 +30,8 @@ class MtlParser {
 		void	SetSheen(std::istringstream& ss);
 		void	SetClearcoatThickness(std::istringstream& ss);
 		void	SetClearcoatRoughness(std::istringstream& ss);
+		void	SetAnisotropy(std::istringstream& ss);
+		void	SetAnisotropyRotation(std::istringstream& ss);
 
 		bool	ParseOnOff(std::istringstream& ss, std::string& option, std::string& statement);
 		void	SetBumpMultiplier(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement);

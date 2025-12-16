@@ -220,6 +220,37 @@ void	MtlParser::SetClearcoatRoughness(std::istringstream& ss)
 
 	clearcoatRoughness = StrToFloat(value, "Pcr", this->countLines, this->fileName);
 }
+
+void	MtlParser::SetAnisotropy(std::istringstream& ss)
+{
+	float& anisotropy = this->materials[this->currentMaterial].anisotropy;
+
+	std::string value;
+	if (!(ss >> value))
+		ThrowError("Not enough arguments in `aniso` (value missing)", this->countLines, this->fileName);
+
+	if (ss >> std::ws; ss.peek() != EOF)
+		ThrowError("Too many arguments in `aniso`", ss, this->countLines, this->fileName);
+
+	anisotropy = StrToFloat(value, "aniso", this->countLines, this->fileName);
+	if (anisotropy < 0.0 || anisotropy > 1.0f)
+		ThrowError("Invalid value in `aniso`, the value should be between 0.0 and 1.0", value, this->countLines, this->fileName);
+}
+
+void	MtlParser::SetAnisotropyRotation(std::istringstream& ss)
+{
+	float& anisotropyRotation = this->materials[this->currentMaterial].anisotropyRotation;
+
+	std::string value;
+	if (!(ss >> value))
+		ThrowError("Not enough arguments in `anisor` (value missing)", this->countLines, this->fileName);
+
+	if (ss >> std::ws; ss.peek() != EOF)
+		ThrowError("Too many arguments in `anisor`", ss, this->countLines, this->fileName);
+
+	anisotropyRotation = StrToFloat(value, "anisor", this->countLines, this->fileName);
+}
+
 void	MtlParser::SetMap(std::istringstream& ss, TextureMap& map, std::string& statement)
 {
 	if (statement == "decal")
@@ -339,6 +370,10 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetClearcoatRoughness(ss);
 		else if (prefix == "Ke")
 			this->ParseColor(ss, prefix, this->materials[this->currentMaterial].emissive);
+		else if (prefix == "aniso")
+			this->SetAnisotropy(ss);
+		else if (prefix == "anisor")
+			this->SetAnisotropyRotation(ss);
 		else if (prefix == "map_Ka")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapAmbient, prefix);
 		else if (prefix == "map_Kd")
